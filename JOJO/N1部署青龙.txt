@@ -1,0 +1,124 @@
+备份文件
+
+删除容器及文件夹
+docker stop qinglong
+docker rm qinglong
+rm -rf CEST
+
+
+
+
+docker run -dit \
+  -v /root/CEST/config:/ql/config \
+  -v /root/CEST/log:/ql/log \
+  -v /root/CEST/db:/ql/db \
+  -v /root/CEST/repo:/ql/repo \
+  -v /root/CEST/raw:/ql/raw \
+  -v /root/CEST/scripts:/ql/scripts \
+  -v /root/CEST/jbot:/ql/jbot \
+  -v /root/CEST/ninja:/ql/ninja \
+  -p 5199:5700 \
+  -p 5299:5701 \
+  --name qinglong \
+  --hostname qinglong \
+  --restart unless-stopped \
+  whyour/qinglong:latest
+  
+  
+
+进容器内执行以下命令docker exec -it qinglong /bin/sh
+
+git clone https://github.com/MoonBegonia/ninja.git /ql/ninja
+cd /ql/ninja/backend
+pnpm install
+pm2 start
+cp sendNotify.js /ql/scripts/sendNotify.js
+
+将以下内容粘贴到 extra.sh（重启后自动更新并启动 Ninja）
+
+cd /ql/ninja/backend
+git checkout .
+git pull
+pnpm install
+pm2 start
+cp sendNotify.js /ql/scripts/sendNotify.js
+
+替换文件
+开启端口
+
+修改ninja
+/root/CEST/ninja/backend/static/
+
+index.html及ico
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ninja</title>
+    <script type="module" crossorigin src="/assets/index.1a8beb0e.js"></script>
+    <link rel="modulepreload" href="/assets/vendor.baa403e4.js">
+    <link rel="stylesheet" href="/assets/index.fcdd9895.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+    window.onload=function(){
+    	var diy = document.querySelector(".leading-6");
+    	var html = "";
+    	html+="<p>①，点击右上角三个冒号，选择浏览器中打开</p>"+
+    	"<p>②，点击第二个“跳转到京东”，提示升级版本无需理会。</p>"+
+    	"<p>③，如果没有三个冒号，则点击第一个“二维码登录”，截图保存二维码，然后京东首页扫一扫，提示升级版本无需理会。</p>"+
+    	"<p>④，不想刷豆豆就点击删除账号。</p>"+
+    	"<p>⑤，扫码登录Cookie正常有效期最多1个月，建议15天重新登陆一次</p>"+
+    	"<p>⑥，为了你的财产安全，强烈建议关闭免密支付并且开启支付验证密码。</p>";
+    	diy.innerHTML = html;
+    }
+    </script>
+  </body>
+</html>
+
+
+Ninja 环境变量
+目前支持的环境变量有：
+
+ALLOW_ADD: 是否允许添加账号 不允许添加时则只允许已有账号登录（默认 true）
+ALLOW_NUM: 允许添加账号的最大数量（默认 40）
+NINJA_PORT: Ninja 运行端口（默认 5701）
+NINJA_NOTIFY: 是否开启通知功能（默认 true）
+NINJA_UA: 自定义 UA，默认为随机
+配置方式：
+docker exec -it qinglong /bin/sh
+
+
+cd /root/CEST/ninja/backend
+cp .env.example .env
+vi .env
+
+
+pm2 start
+
+
+使用京东扫描二维码登录，提示升级版本无需理会，直接回到网页等待跳转，登录成功显示用户名或者提示添加成功即自动上车。
+
+
+ql repo https://ghproxy.com/https://github.com/anyung533/special.git "jd_|jx_|pull|gua_|code_|zy_" "JDJRValidator_Pure.js|sign_graphics_validate.js|MovementFaker.js|ZooFaker_Necklace.js|jd_sign_validate.js"
+
+# ........................ ................................................
+ALLOW_ADD=true
+
+#.................................
+ALLOW_NUM=40
+
+# Ninja ............
+NINJA_PORT=5701
+
+# Ninja ..................
+NINJA_NOTIFY=true
+
+# user-agent
+# NINJA_UA=""
+
+
