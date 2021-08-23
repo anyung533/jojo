@@ -37,16 +37,16 @@ const $ = new Env('京喜工厂');
 const JD_API_HOST = 'https://m.jingxi.com';
 const notify = $.isNode() ? require('./sendNotify') : '';
 //通知级别 1=生产完毕可兑换通知;2=可兑换通知+生产超时通知+兑换超时通知;3=可兑换通知+生产超时通知+兑换超时通知+未选择商品生产通知(前提：已开通京喜工厂活动);默认第2种通知
-let notifyLevel = $.isNode() ? process.env.JXGC_NOTIFY_LEVEL || 2 : 2;
+let notifyLevel = $.isNode() ? process.env.JXGC_NOTIFY_LEVEL || 1 : 1;
 const randomCount = $.isNode() ? 20 : 5;
 let tuanActiveId = ``, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [
-  'AXDgNYKNLs51h24hm7ZK-w==@2pMYXE95BIkCIGcO6UzTpQ==@DgHnSIl_Xks49TJjxzo7nw==@UO68abNzUTGatLzR4Z4RTg==@xJctChTp3ru2blH_WwFopg==@W2y011egxw55xNDYP8Xpww==@NRjbnfYENRVL9QSnLZZNrA==@dmgVOhr4JdUp1CG78ohkWw==@6nURqZ5tze71d9TbZGQg3Q==',
-  'AXDgNYKNLs51h24hm7ZK-w==@2pMYXE95BIkCIGcO6UzTpQ==@DgHnSIl_Xks49TJjxzo7nw==@UO68abNzUTGatLzR4Z4RTg==@xJctChTp3ru2blH_WwFopg==@W2y011egxw55xNDYP8Xpww==@NRjbnfYENRVL9QSnLZZNrA==@dmgVOhr4JdUp1CG78ohkWw==@6nURqZ5tze71d9TbZGQg3Q==',
-  'AXDgNYKNLs51h24hm7ZK-w==@2pMYXE95BIkCIGcO6UzTpQ==@DgHnSIl_Xks49TJjxzo7nw==@UO68abNzUTGatLzR4Z4RTg==@xJctChTp3ru2blH_WwFopg==@W2y011egxw55xNDYP8Xpww==@NRjbnfYENRVL9QSnLZZNrA==@dmgVOhr4JdUp1CG78ohkWw==@6nURqZ5tze71d9TbZGQg3Q==',
-  'AXDgNYKNLs51h24hm7ZK-w==@2pMYXE95BIkCIGcO6UzTpQ==@DgHnSIl_Xks49TJjxzo7nw==@UO68abNzUTGatLzR4Z4RTg==@xJctChTp3ru2blH_WwFopg==@W2y011egxw55xNDYP8Xpww==@NRjbnfYENRVL9QSnLZZNrA==@dmgVOhr4JdUp1CG78ohkWw==@6nURqZ5tze71d9TbZGQg3Q==',
+  '',
+  '',
+  '',
+
 ];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [];
@@ -101,7 +101,7 @@ if ($.isNode()) {
       if (cookiesArr[i]) {
         cookie = cookiesArr[i];
         $.isLogin = true;
-        $.canHelp = true;//能否参团
+        $.canHelp = false;//能否参团
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
 
         if ((cookiesArr && cookiesArr.length >= ($.tuanNum || 5)) && $.canHelp) {
