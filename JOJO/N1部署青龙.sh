@@ -53,8 +53,6 @@ cp sendNotify.js /ql/scripts/sendNotify.js
 八》修改Ninja 环境变量
 
 docker exec -it qinglong /bin/sh
-
-
 cd /root/JOJO/ninja/backend
 cp .env.example .env
 vi .env
@@ -86,7 +84,7 @@ ql update
 ql repo https://ghproxy.com/https://github.com/anyung533/jojo.git "jd_|jx_|getJDCookie" "activity|backUp|Coupon" "^jd[^_]|USER|utils|file|jdCookie.js" 
 
 十二》添加一次性依赖任务
-task /ql/repo/anyung533_special/onlyone.sh
+task /ql/repo/anyung533_jojo/JOJO/onlyone.sh
 
 十三》添加文件替换任务
 task /ql/repo/anyung533_jojo/JOJO/file.sh
