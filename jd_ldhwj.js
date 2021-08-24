@@ -5,7 +5,7 @@ boxjs：https://raw.githubusercontent.com/Ariszy/Private-Script/master/Ariszy.bo
 
 [task_local]
 #来电好物季
-10 1,8,16 * * * zy_ldhwj.js
+10 1,8,16 * * * jd_ldhwj.js
 
 */
 const $ = new Env('来电好物季')
