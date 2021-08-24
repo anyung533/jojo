@@ -4,8 +4,8 @@ cp -rf /ql/repo/anyung533_jojo/file/index.html /ql/ninja/backend/static/
 #jdCookie.js
 cp -rf /ql/repo/anyung533_jojo/file/jdCookie.js /ql/scripts/
 #code.sh+team.sh
-cp -rf /ql/repo/anyung533_jojo/file/code.js /ql/config/
-cp -rf /ql/repo/anyung533_jojo/file/team.js /ql/config/
+cp -rf /ql/repo/anyung533_jojo/file/code.sh /ql/config/
+cp -rf /ql/repo/anyung533_jojo/file/team.sh /ql/config/
 更新NINJA
 rm -rf /ql/ninja/backend/ql.js
 rm -rf /ql/ninja/backend/user.js
