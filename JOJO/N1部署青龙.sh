@@ -7,7 +7,7 @@ rm -rf CEST
 
 三》删除镜像
 docker image ls
-docker image rm XXXX
+docker image rm
 
 四》部署青龙，更改端口号
 
@@ -20,8 +20,8 @@ docker run -dit \
   -v /root/JOJO/scripts:/ql/scripts \
   -v /root/JOJO/jbot:/ql/jbot \
   -v /root/JOJO/ninja:/ql/ninja \
-  -p 5008:5700 \
-  -p 5018:5701 \
+  -p 5199:5700 \
+  -p 5299:5701 \
   --name qinglong \
   --hostname qinglong \
   --restart unless-stopped \
@@ -29,8 +29,7 @@ docker run -dit \
   
  五》部署NINJA 
 
-进容器内执行以下命令docker exec -it qinglong /bin/sh
-
+docker exec -it qinglong /bin/sh
 git clone https://github.com/MoonBegonia/ninja.git /ql/ninja
 cd /ql/ninja/backend
 pnpm install
@@ -223,3 +222,22 @@ NINJA_PORT: Ninja 运行端口（默认 5701）
 NINJA_NOTIFY: 是否开启通知功能（默认 true）
 NINJA_UA: 自定义 UA，默认为随机
 配置方式：
+
+
+cd /ql/ninja/backend
+rm -rf .env
+wget https://raw.githubusercontent.com/LJMX996/jd/help/.env
+git checkout .
+git pull
+
+rm -rf /ql/ninja/backend/ql.js
+rm -rf /ql/ninja/backend/user.js
+
+cd /ql/ninja/backend && wget https://raw.githubusercontent.com/MoonBegonia/ninja/deda6f0c0207f2bc0e10454fdbe99b3a9f3878a8/backend/ql.js
+
+cd /ql/ninja/backend && wget https://raw.githubusercontent.com/MoonBegonia/ninja/deda6f0c0207f2bc0e10454fdbe99b3a9f3878a8/backend/user.js
+
+pnpm install
+pm2 start
+
+
