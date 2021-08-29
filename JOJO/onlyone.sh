@@ -1,3 +1,4 @@
+cd /ql/scripts && npm install ws
 cd /ql/scripts && npm fund
 cd /ql/scripts && npm install jsdom
 cd /ql/scripts && npm install got
