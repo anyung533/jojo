@@ -1,0 +1,32 @@
+version: '2.0'
+services:
+##第一个青龙
+  q1:
+    image: whyour/qinglong:latest
+    container_name: ql1
+    restart: always
+    volumes:
+       - /root/JOJO/ql1/config:/ql/config
+       - /root/JOJO/ql1/scripts:/ql/scripts
+       - /root/JOJO/ql1/repo:/ql/repo
+       - /root/JOJO/ql1/log:/ql/log
+       - /root/JOJO/ql1/db:/ql/db
+       - /root/JOJO/ql1/jbot:/ql/jbot
+       - /root/JOJO/ql1/raw:/ql/raw
+    ports:
+       - 5002:5700
+##第二个青龙
+  q2:
+    image: whyour/qinglong:latest
+    container_name: ql2
+    restart: always
+    volumes:
+       - /root/JOJO/ql2/config:/ql/config
+       - /root/JOJO/ql2/scripts:/ql/scripts
+       - /root/JOJO/ql2/repo:/ql/repo
+       - /root/JOJO/ql2/log:/ql/log
+       - /root/JOJO/ql2/db:/ql/db
+       - /root/JOJO/ql2/jbot:/ql/jbot
+       - /root/JOJO/ql2/raw:/ql/raw
+    ports:
+       - 5003:5700
