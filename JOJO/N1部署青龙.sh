@@ -3,7 +3,7 @@
 二》删除容器及文件夹
 docker stop qinglong
 docker rm qinglong
-rm -rf CEST
+rm -rf JOJO
 
 三》删除镜像
 docker image ls
@@ -12,16 +12,16 @@ docker image rm
 四》部署青龙，更改端口号
 
 docker run -dit \
-  -v /root/JOJO/config:/ql/config \
-  -v /root/JOJO/log:/ql/log \
-  -v /root/JOJO/db:/ql/db \
-  -v /root/JOJO/repo:/ql/repo \
-  -v /root/JOJO/raw:/ql/raw \
-  -v /root/JOJO/scripts:/ql/scripts \
-  -v /root/JOJO/jbot:/ql/jbot \
-  -v /root/JOJO/ninja:/ql/ninja \
-  -p 5199:5700 \
-  -p 5299:5701 \
+  -v /media/123/JOJO/config:/ql/config \
+  -v /media/123/JOJO/log:/ql/log \
+  -v /media/123/JOJO/db:/ql/db \
+  -v /media/123/JOJO/repo:/ql/repo \
+  -v /media/123/JOJO/raw:/ql/raw \
+  -v /media/123/JOJO/scripts:/ql/scripts \
+  -v /media/123/JOJO/jbot:/ql/jbot \
+  -v /media/123/JOJO/ninja:/ql/ninja \
+  -p 5188:5700 \
+  -p 5288:5701 \
   --name qinglong \
   --hostname qinglong \
   --restart unless-stopped \
@@ -52,7 +52,7 @@ cp sendNotify.js /ql/scripts/sendNotify.js
 八》修改Ninja 环境变量
 
 docker exec -it qinglong /bin/sh
-cd /root/JOJO/ninja/backend
+cd /media/123/JOJO/ninja/backend
 cp .env.example .env
 vi .env
 
@@ -179,7 +179,7 @@ ql repo https://ghproxy.com/https://github.com/anyung533/jojo.git "jd_|jx_|gua_|
 
 
 修改ninja
-/root/JOJO/ninja/backend/static/
+/media/123/JOJO/ninja/backend/static/
 
 index.html及ico
 
