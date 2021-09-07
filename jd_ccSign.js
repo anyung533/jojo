@@ -2,6 +2,7 @@
 领券中心签到
 
 @感谢 ddo 提供sign算法
+@感谢 匿名大佬 提供pin算法
 
 活动入口：领券中心
 更新时间：2021-08-23
@@ -10,23 +11,23 @@
 ============Quantumultx===============
 [task_local]
 #领券中心签到
-15 0 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js, tag=领券中心签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+15 0-23/12 * * * https://github.com/anyung533/jojo/blob/main/jd_ccSign.js, tag=领券中心签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "15 0 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js,tag=领券中心签到
+cron "15 0-23/12 * * *" script-path=https://github.com/anyung533/jojo/blob/main/jd_ccSign.js,tag=领券中心签到
 
 ===============Surge=================
-领券中心签到 = type=cron,cronexp="15 0 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js
+领券中心签到 = type=cron,cronexp="15 0-23/12 * * *",wake-system=1,timeout=3600,script-path=https://github.com/anyung533/jojo/blob/main/jd_ccSign.js
 
 ============小火箭=========
-领券中心签到 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js, cronexpr="15 0 * * *", timeout=3600, enable=true
+领券中心签到 = type=cron,script-path=https://github.com/anyung533/jojo/blob/main/jd_ccSign.js, cronexpr="15 0-23/12 * * *", timeout=3600, enable=true
  */
 const $ = new Env('领券中心签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 if ($.isNode()) {
@@ -80,10 +81,10 @@ async function jdSign() {
 
 async function getCouponConfig() {
   let functionId = `getCouponConfig`
-  let body = `%7B%22childActivityUrl%22%3A%22openapp.jdmobile%3A%2F%2Fvirtual%3Fparams%3D%7B%5C%22category%5C%22%3A%5C%22jump%5C%22%2C%5C%22des%5C%22%3A%5C%22couponCenter%5C%22%7D%22%2C%22incentiveShowTimes%22%3A0%2C%22monitorRefer%22%3A%22%22%2C%22monitorSource%22%3A%22ccresource_android_index_config%22%2C%22pageClickKey%22%3A%22Coupons_GetCenter%22%2C%22rewardShowTimes%22%3A0%2C%22sourceFrom%22%3A%221%22%7D`
+  let body = escape(JSON.stringify({"childActivityUrl":"openapp.jdmobile://virtual?params={\"category\":\"jump\",\"des\":\"couponCenter\"}","incentiveShowTimes":0,"monitorRefer":"","monitorSource":"ccresource_android_index_config","pageClickKey":"Coupons_GetCenter","rewardShowTimes":0,"sourceFrom":"1"}))
   let uuid = randomString(16)
   let sign = await getSign(functionId, decodeURIComponent(body), uuid)
-  let url = `${JD_API_HOST}?functionId=${functionId}&build=89743&client=android&clientVersion=10.1.2&uuid=${uuid}&${sign}`
+  let url = `${JD_API_HOST}?functionId=${functionId}&client=android&clientVersion=10.1.2&uuid=${uuid}&${sign}`
   return new Promise(async resolve => {
     $.post(taskUrl(url, body), async (err, resp, data) => {
       try {
@@ -93,13 +94,25 @@ async function getCouponConfig() {
         } else {
           if (data) {
             data = JSON.parse(data)
+            let functionId, body
             if (data.result.couponConfig.signNecklaceDomain) {
-              console.log(`活动已升级，暂时无法解决，跳过执行`)
+              if (data.result.couponConfig.signNecklaceDomain.roundData.ynSign === '1') {
+                console.log(`签到失败：今日已签到~`)
+              } else {
+                let pin = await getsecretPin($.UserName)
+                functionId = `ccSignInNecklace`
+                body = escape(JSON.stringify({"childActivityUrl":"openapp.jdmobile://virtual?params={\"category\":\"jump\",\"des\":\"couponCenter\"}","monitorRefer":"appClient","monitorSource":"cc_sign_android_index_config","pageClickKey":"Coupons_GetCenter","sessionId":"","signature":data.result.couponConfig.signNecklaceDomain.signature,"pin":pin,"verifyToken":""}))
+              }
             } else {
-              let functionId = `ccSignInNew`
-              let body = `%7B%22childActivityUrl%22%3A%22openapp.jdmobile%3A%2F%2Fvirtual%3Fparams%3D%7B%5C%22category%5C%22%3A%5C%22jump%5C%22%2C%5C%22des%5C%22%3A%5C%22couponCenter%5C%22%7D%22%2C%22monitorRefer%22%3A%22appClient%22%2C%22monitorSource%22%3A%22cc_sign_android_index_config%22%2C%22pageClickKey%22%3A%22Coupons_GetCenter%22%7D`
-              await ccSignInNew(functionId, body)
+              if (data.result.couponConfig.signNewDomain.roundData.ynSign === '1') {
+                console.log(`签到失败：今日已签到~`)
+              } else {
+                let pin = await getsecretPin($.UserName)
+                functionId = `ccSignInNew`
+                body = escape(JSON.stringify({"childActivityUrl":"openapp.jdmobile://virtual?params={\"category\":\"jump\",\"des\":\"couponCenter\"}","monitorRefer":"appClient","monitorSource":"cc_sign_android_index_config","pageClickKey":"Coupons_GetCenter","pin":pin}))
+              }
             }
+            if (functionId && body) await ccSign(functionId, body)
           }
         }
       } catch (e) {
@@ -110,23 +123,21 @@ async function getCouponConfig() {
     })
   })
 }
-async function ccSignInNew(functionId, body) {
+async function ccSign(functionId, body) {
   let uuid = randomString(16)
   let sign = await getSign(functionId, decodeURIComponent(body), uuid)
-  let url = `${JD_API_HOST}?functionId=${functionId}&build=89568&client=android&clientVersion=9.2.2&uuid=${uuid}&${sign}`
+  let url = `${JD_API_HOST}?functionId=${functionId}&client=android&clientVersion=10.1.2&uuid=${uuid}&${sign}`
   return new Promise(async resolve => {
     $.post(taskUrl(url, body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} ccSignInNew API请求失败，请检查网路重试`)
+          console.log(`${$.name} ccSign API请求失败，请检查网路重试`)
         } else {
           if (data) {
             data = JSON.parse(data)
             if (data.busiCode === '0') {
-              console.log(`签到成功：获得 ${data.result.signResult.signData.amount} 红包`)
-            } else if (data.busiCode === '1002') {
-              console.log(`今日已签到`)
+              console.log(functionId === 'ccSignInNew' ? `签到成功：获得 ${data.result.signResult.signData.amount} 红包` : `签到成功：获得 ${data.result.signResult.signData.necklaceScore} 点点券，${data.result.signResult.signData.amount}`)
             } else {
               console.log(`签到失败：${data.message}`)
             }
@@ -142,26 +153,55 @@ async function ccSignInNew(functionId, body) {
 }
 function getSign(functionid, body, uuid) {
   return new Promise(async resolve => {
-    let clientVersion
-    if (functionid === 'ccSignInNew') {
-      clientVersion = '9.2.2'
-    } else {
-      clientVersion = '10.1.2'
-    }
     let data = {
       "functionId":functionid,
       "body":body,
       "uuid":uuid,
       "client":"android",
-      "clientVersion":clientVersion
+      "clientVersion":"10.1.2"
     }
+    let HostArr = ['jdsign.cf', 'signer.nz.lu']
+    let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
-      url: `https://jdsign.cf/ddo`,
+      url: `https://cdn.nz.lu/ddo`,
       body: JSON.stringify(data),
       headers: {
-        "Host": "jdsign.tk",
+        Host,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      },
+      timeout: 15000
+    }
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} getSign API请求失败，请检查网路重试`)
+        } else {
+
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
       }
+    })
+  })
+}
+function getsecretPin(pin) {
+  return new Promise(async resolve => {
+    let data = {
+      "pt_pin": pin
+    }
+    let HostArr = ['jdsign.cf', 'signer.nz.lu']
+    let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
+    let options = {
+      url: `https://cdn.nz.lu/pin`,
+      body: JSON.stringify(data),
+      headers: {
+        Host,
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      },
+      timeout: 15000
     }
     $.post(options, (err, resp, data) => {
       try {
@@ -198,7 +238,7 @@ function taskUrl(url, body) {
     headers: {
       "Host": "api.m.jd.com",
       "Connection": "keep-alive",
-      "User-Agent": "okhttp/3.12.1;jdmall;android;version/9.2.2;build/89568;screen/1440x2560;os/7.1.2;network/wifi",
+      "User-Agent": "okhttp/3.12.1;jdmall;android;version/10.1.2;build/89743;screen/1080x2030;os/9;network/wifi;",
       "Accept": "*/*",
       "Referer": "https://h5.m.jd.com/rn/42yjy8na6pFsq1cx9MJQ5aTgu3kX/index.html",
       "Accept-Encoding": "gzip, deflate",

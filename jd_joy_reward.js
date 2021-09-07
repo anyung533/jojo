@@ -31,7 +31,7 @@ let joyRewardName = 0;//是否兑换京豆，默认0不兑换京豆，其中20�
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
-let jdNotify = true;//是否开启静默运行，默认false关闭(即:奖品兑换成功后会发出通知提示)
+let jdNotify = false;//是否开启静默运行，默认false关闭(即:奖品兑换成功后会发出通知提示)
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -221,7 +221,7 @@ async function joyReward() {
 }
 function getExchangeRewards() {
   let opt = {
-    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=ztmFUCxcPMNyUq0P",
+    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=RtKLB8euDo7KwsO0",
     method: "GET",
     data: {},
     credentials: "include",
@@ -229,7 +229,7 @@ function getExchangeRewards() {
   }
   return new Promise((resolve) => {
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'ztmFUCxcPMNyUq0P' + lkt).toString()
+    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
     const option = {
       url: "https:" + taroRequest(opt)['url'] + $.validate,
       headers: {
@@ -269,13 +269,13 @@ function getExchangeRewards() {
 function exchange(saleInfoId, orderSource) {
   let body = {"buyParam":{"orderSource":orderSource,"saleInfoId":saleInfoId},"deviceInfo":{}}
   let opt = {
-    "url": "//jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=ztmFUCxcPMNyUq0P",
+    "url": "//jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=RtKLB8euDo7KwsO0",
     "data":body,
     "credentials":"include","method":"POST","header":{"content-type":"application/json"}
   }
   return new Promise((resolve) => {
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'ztmFUCxcPMNyUq0P' + lkt).toString()
+    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
     const option = {
       url: "https:" + taroRequest(opt)['url'] + $.validate,
       body: `${JSON.stringify(body)}`,
