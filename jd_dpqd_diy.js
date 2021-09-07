@@ -2,10 +2,12 @@
 店铺签到，各类店铺签到，有新的店铺直接添加token即可
 搬运cui521大佬脚本，请勿外传！！！
 
+自带的Token List网址已不可用
+
 由LAzysheep更新
-3 0,9 * * * jd_qpqd_diy.js
+cron 30 0,23 * * * jd_qpqd_diy.js, tag=店铺签到diy
 */
-const $ = new Env('店铺签到懒人');
+const $ = new Env('店铺签到');
 
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -67,8 +69,8 @@ if ($.isNode()) {
   
 	$.TokenLists = []
   
-        $.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
-        //$.innerTokenList = token
+        //$.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
+        $.innerTokenList = token
 	
 	$.TokenLists.push(...$.TokenList,...$.innerTokenList);
 
