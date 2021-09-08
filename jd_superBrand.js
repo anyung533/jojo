@@ -2,23 +2,23 @@
 特物Z|万物皆可国创
 抄自 @yangtingxiao 抽奖机脚本
 活动入口：
-更新地址：https://github.com/anyung533/jojo/blob/main/jd_superBrand.js
+更新地址：https://raw.githubusercontent.com/anyung533/jojo/main/jd_superBrand.js
 已支持IOS双京东账号, Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, 小火箭，JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #特物Z|万物皆可国创
-30 19,21 * * * https://github.com/anyung533/jojo/blob/main/jd_superBrand.js, tag=特物Z|万物皆可国创, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+30 19,21 * * * https://raw.githubusercontent.com/anyung533/jojo/main/jd_superBrand.js, tag=特物Z|万物皆可国创, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "30 19,21 * * *" script-path=https://github.com/anyung533/jojo/blob/main/jd_superBrand.js tag=特物Z|万物皆可国创
+cron "30 19,21 * * *" script-path=https://raw.githubusercontent.com/anyung533/jojo/main/jd_superBrand.js tag=特物Z|万物皆可国创
 
 ===============Surge=================
-特物Z|万物皆可国创 = type=cron,cronexp="30 19,21 * * *",wake-system=1,timeout=3600,script-path=https://github.com/anyung533/jojo/blob/main/jd_superBrand.js
+特物Z|万物皆可国创 = type=cron,cronexp="30 19,21 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/anyung533/jojo/main/jd_superBrand.js
 
 ============小火箭=========
-特物Z|万物皆可国创 = type=cron,script-path=https://github.com/anyung533/jojo/blob/main/jd_superBrand.js, cronexpr="30 19,21 * * *", timeout=3600, enable=true
+特物Z|万物皆可国创 = type=cron,script-path=https://raw.githubusercontent.com/anyung533/jojo/main/jd_superBrand.js, cronexpr="30 19,21 * * *", timeout=3600, enable=true
 
  */
 const $ = new Env('特物Z|万物皆可国创');
