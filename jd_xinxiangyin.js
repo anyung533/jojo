@@ -1,7 +1,7 @@
 /**
  心相印店铺活动  古蜀寻宝
  注意：*******参加活动需要入会**************参加活动需要入会**************参加活动需要入会*******
- cron "12 9,15 1-30 9,10 *" https://raw.githubusercontent.com/star261/jd/main/scripts/jd_xinxiangyin.js
+ cron "12 9,15 1-30 9,10 *" https://github.com/anyung533/jojo/blob/main/jd_xinxiangyin.js
  * */
 const $ = new Env('古蜀寻宝');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -22,9 +22,9 @@ if ($.isNode()) {
 }
 !(async () => {
     let res = ['a5e8557b614f44efaafd530c2892b0c4'];
-    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/xinxiangyin.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://github.com/anyung533/jojo/blob/main/file/xinxiangyin.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/xinxiangyin.json');}catch (e) {}
+        try{res = await getAuthorShareCode('https://github.com/anyung533/jojo/blob/main/file/xinxiangyin.json');}catch (e) {}
         if(!res){res = ['a5e8557b614f44efaafd530c2892b0c4'];}
     }
     if (!cookiesArr[0]) {
