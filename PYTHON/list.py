@@ -15,6 +15,6 @@ print(scores)
 
 scores = [50,60,80,90,100]
 name=["小白","小黑","小红","小绿","小青"]
-scores.extend(name)#拓展列表
+scores.extend(name)#拓展列表 .extend函数
 print(scores)
 
