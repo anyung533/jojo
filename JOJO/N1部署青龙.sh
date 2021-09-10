@@ -96,7 +96,15 @@ cp -rfv /ql/repo/LJMX996_jd_aaron/utils /ql/scripts/
 常用定时
 20 13 * * 6      每6天执行一次
 0,30 0-23/1 * * *    每30分钟一次
-
+#12 9,15 1-30 9,10 *
+#
+#2021-09-10 15:12:00
+#2021-09-11 09:12:00
+#2021-09-11 15:12:00
+#2021-09-12 09:12:00
+#2021-09-12 15:12:00
+#2021-09-13 09:12:00
+#2021-09-13 15:12:00
 
 
 
@@ -240,4 +248,6 @@ cd /ql/ninja/backend && wget https://raw.githubusercontent.com/MoonBegonia/ninja
 pnpm install
 pm2 start
 
+
+12 9,15 1-30 9,10 *
 
