@@ -4,7 +4,7 @@ https://3.cn/102Qir-AW
 
 如需加购请设置环境变量[guaunknownTask_addSku4]为"true"
 
-55 12 * 9,10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_UnknownTask4.js
+55 12 * 9,10 * https://raw.githubusercontent.com/anyung533/jojo/main/jd_UnknownTask4.js
 */
 const $ = new Env('希捷品牌日瓜分百万京豆');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
