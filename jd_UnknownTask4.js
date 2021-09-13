@@ -31,8 +31,8 @@ let lz_jdpin_token_cookie =''
 let activityCookie =''
 $.hotFlag = false
 $.outFlag = false
-$.activityId = '78d0a8cb3612470f84bb61981609177f'
-$.shareUuid = '19fcb4d920854909b6e8ebf409317d20'
+$.activityId = '78d0a8cb3612470f84bb61981609177'
+$.shareUuid = 'e7d12aeadacc4c29a24d6bc100da76b5'
 $.temp = [];
 !(async () => {
   if (!cookiesArr[0]) {
