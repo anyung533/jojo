@@ -6,7 +6,7 @@ https://3.cn/102Qir-AW
 
 55 12 * 9,10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_UnknownTask4.js
 */
-const $ = new Env('希捷品牌日瓜分百万京豆');
+const $ = new Env('9.7-10-7希捷品牌日瓜分百万京豆');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 const notify = $.isNode() ? require('./sendNotify') : '';
