@@ -7,7 +7,7 @@
  * @param text 通知头
  * @param desp 通知体
  * @param params 某些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
- * @param author 作者仓库等信息  例：`本通知 By: 佛性刷豆豆有限公司`
+ * @param author 作者仓库等信息  例：`本通知 By：病毒早点消失吧！`
  */
 //sendNotify Pro增加的变量请移步https://github.com/ccwav/QLScript 查看.
 
@@ -171,13 +171,14 @@ if (process.env.PUSH_PLUS_USER) {
  * @param text 通知头
  * @param desp 通知体
  * @param params 某些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
- * @param author 作者仓库等信息  例：`本通知 By: 佛性刷豆豆有限公司`
+ * @param author 作者仓库等信息  例：`本通知 By：病毒早点消失吧！`
  * @returns {Promise<unknown>}
  */
  
 let ShowRemarkType="1";
 let Notify_CompToGroup2="false";
 let Notify_NoCKFalse="false";
+let Notify_NoLoginSuccess="false";
 let UseGroup2=false;
 let strAuthor="";
 
@@ -211,6 +212,9 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
 	}
 	if (process.env.SHOWREMARKTYPE) {
 	  ShowRemarkType = process.env.SHOWREMARKTYPE;
+	}
+	if (process.env.NOTIFY_NOLOGINSUCCESS) {
+	  Notify_NoLoginSuccess = process.env.NOTIFY_NOLOGINSUCCESS;
 	}
 
 	if(text.indexOf("忘了种植") != -1){
@@ -253,6 +257,15 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
 			}		
 		}
 	}
+	if(Notify_NoLoginSuccess=="true"){
+		if(text=="登陆通知"){
+			if(desp.indexOf("登陆成功") != -1){
+				console.log(`登陆成功不推送`);
+				return;
+			}		
+		}
+	}
+	
 	if (titleIndex2 !== -1) {
 		console.log(`${text} 在群组2推送名单中，初始化群组推送`);
 		UseGroup2=true;

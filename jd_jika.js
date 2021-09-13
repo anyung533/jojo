@@ -1,7 +1,7 @@
 /*
 集萌宝得团圆礼包 @zero205
 活动入口：首页 -> 领券 -> 集卡赢大奖
-更新地址：https://raw.githubusercontent.com/anyung533/jojo/main/jd_jika.js
+更新地址：https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js
 
 助力逻辑：优先账号内互助，有剩余助力次数再帮我助力
 
@@ -9,23 +9,23 @@
 ============Quantumultx===============
 [task_local]
 #集萌宝得团圆礼包
-10 8,23 * * * https://raw.githubusercontent.com/anyung533/jojo/main/jd_jika.js, tag=集萌宝得团圆礼包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+10 8,23 * * * https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js, tag=集萌宝得团圆礼包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 8,23 * * *" script-path=https://raw.githubusercontent.com/anyung533/jojo/main/jd_jika.js, tag=集萌宝得团圆礼包
+cron "10 8,23 * * *" script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js, tag=集萌宝得团圆礼包
 
 ===============Surge=================
-集萌宝得团圆礼包 = type=cron,cronexp="10 8,23 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/anyung533/jojo/main/jd_jika.js
+集萌宝得团圆礼包 = type=cron,cronexp="10 8,23 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js
 
 ============小火箭=========
-集萌宝得团圆礼包 = type=cron,script-path=https://raw.githubusercontent.com/anyung533/jojo/main/jd_jika.js, cronexpr="10 0,8,23 * * *", timeout=200, enable=true
+集萌宝得团圆礼包 = type=cron,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js, cronexpr="10 0,8,23 * * *", timeout=200, enable=true
  */
 const $ = new Env('集萌宝得团圆礼包');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 if ($.isNode()) {
@@ -45,7 +45,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     return;
   }
   await getAuthorShareCode()
-  console.log(`\n\n@Author：zero205\n@github：https://github.com/zero2dddd05/JD_tencent_scf/tree/main\n@Tips：默认不执行入会任务\n\n助力逻辑：优先账号内互助，有剩余助力次数再帮我助力\n`);
+  console.log(`\n\n@Author：zero205\n@github：https://github.com/zero205/JD_tencent_scf/tree/main\n@Tips：默认不执行入会任务\n\n助力逻辑：优先账号内互助，有剩余助力次数再帮我助力\n`);
   $.inviteList = []
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
@@ -328,7 +328,7 @@ function openCard() {
 function getAuthorShareCode() {
   return new Promise(resolve => {
     $.get({
-      url: "https://raw.githubusercontent.com/anyung533/jojo/main/file/jika.json",
+      url: "https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/jika.json",
       headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }
