@@ -1,6 +1,6 @@
 /*
 
-cron 1 7,12,19 * * * jd_beauty.js
+cron 0 22 * * * jd_beauty.js
  */
 const $ = new Env('美丽研究院');
 const notify = $.isNode() ? require('./sendNotify') : '';
