@@ -35,7 +35,11 @@ if ($.isNode()) {
         try{res = await getAuthorShareCode('');}catch (e) {}
         if(!res){res = [];}
     }
-    $.shareUuid = getRandomArrayElements(res,1)[0];
+    if(res.length === 0){
+        $.shareUuid = '';
+    }else{
+        $.shareUuid = getRandomArrayElements(res,1)[0];
+    }
     for (let i = 0; i < cookiesArr.length; i++) {
         getUA();
         $.index = i + 1;
@@ -88,7 +92,7 @@ async function main() {
     }else{
         console.log(`活动抽奖码：${$.activityInfo.lotteryCount.cuponcode}`);
     }
-    if($.activityInfo.isJoin.status === '0'){
+    if($.activityInfo.isJoin.status === '0' && $.shareUuid){
         await join('1000085868');
         await $.wait(1000);
         for (let i = 0; i < typeList.length; i++) {
@@ -119,7 +123,7 @@ async function takePost(type,body) {
             "Accept": "*/*",
             "Content-Type":"application/x-www-form-urlencoded",
             "Origin":"https://jmkj2-isv.isvjcloud.com",
-            "Referer": " https://jmkj2-isv.isvjcloud.com/",
+            "Referer": "https://jmkj2-isv.isvjcloud.com/",
             "apptoken":$.apptoken,
             "User-Agent": $.UA,
             "Accept-Language": "zh-cn",
@@ -157,7 +161,7 @@ async function takeGet(type) {
             "Accept": "*/*",
             "Content-Type":"application/x-www-form-urlencoded",
             "Origin":"https://jmkj2-isv.isvjcloud.com",
-            "Referer": " https://jmkj2-isv.isvjcloud.com/",
+            "Referer": "https://jmkj2-isv.isvjcloud.com/",
             "apptoken":$.apptoken,
             "User-Agent": $.UA,
             "Accept-Language": "zh-cn",
@@ -427,9 +431,6 @@ function TotalBean() {
     })
 }
 function getRandomArrayElements(arr, count) {
-    if(arr.length === 0){
-        arr = ["2028","12668","12137","12684","12695","12769","12795","12808","12827","12792"];
-    }
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());

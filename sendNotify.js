@@ -201,11 +201,11 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
                 strTitle = "京喜工厂";
             }
         }
-
+		 
         if (strTitle) {
             const notifyRemindList = process.env.NOTIFY_NOREMIND ? process.env.NOTIFY_NOREMIND.split('&') : [];
             titleIndex = notifyRemindList.findIndex((item) => item === strTitle);
-
+			
             if (titleIndex !== -1) {
                 console.log(`${text} 在领取信息黑名单中，已跳过推送`);
                 return;
@@ -216,7 +216,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
             UseGroup2 = true;
         }
         if (Notify_CompToGroup2 != "true" && Notify_CompToGroup2 != "false") {
-            const notifyCompToGroup2 = process.env.Notify_CompToGroup2 ? process.env.Notify_CompToGroup2.split('&') : [];
+            const notifyCompToGroup2 = Notify_CompToGroup2 ? Notify_CompToGroup2.split('&') : [];
             titleIndex = notifyCompToGroup2.findIndex((item) => item === strTitle);
             if (titleIndex !== -1) {
                 console.log(`${strTitle}领取信息推送至群组2`);
