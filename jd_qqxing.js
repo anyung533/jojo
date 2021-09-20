@@ -18,7 +18,7 @@ https://lzdz-isv.isvjcloud.com/dingzhi/qqxing/pasture/activity?activityId=901210
 ============Quantumultx===============
 [task_local]
 #星系牧场
-45 0,6-23/2 * * * https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_qqxing.js, tag=星系牧场, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+45 0,6-23/2 * * * jd_qqxing.js, tag=星系牧场, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
 const $ = new Env('QQ星系牧场');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -42,7 +42,7 @@ if ($.isNode()) {
 
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
-$.shareuuid = ["eccc9e23c4514adaa3ffdc7febcee049", "2afe3987489e4dcca2ef0d178419efa2","09ac806f631a4188a8af1935d8998780"][Math.floor((Math.random() * 3))];
+$.shareuuid = ["eccc9e23c4514adaa3ffdc7febcee049", "00d4f3f6485247438a71669a5df70519","2afe3987489e4dcca2ef0d178419efa2"][Math.floor((Math.random() * 3))];
 !(async () => {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
