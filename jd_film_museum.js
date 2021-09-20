@@ -31,9 +31,9 @@ if ($.isNode()) {
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/museum.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/musefum.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/museum.json');}catch (e) {}
+        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/musfeum.json');}catch (e) {}
         if(!res){res = [];}
     }
     if(res.length === 0){
