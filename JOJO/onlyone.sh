@@ -14,3 +14,16 @@ cd /ql/scripts && apk add nodejs-current
 cd /ql/scripts && pip3 install requests
 cd /ql/scripts && apk add python3 zlib-dev gcc jpeg-dev python3-dev musl-dev freetype-dev
 cd /ql/scripts/ && apk add --no-cache build-base g++ cairo-dev pango-dev giflib-dev && npm i && npm i -S ts-node typescript @types/node date-fns axios png-js canvas --build-from-source
+
+pnpm install @otplib/preset-default
+cd /ql/scripts && npm install form-data
+cd /ql/scripts && npm install download
+cd /ql/scripts && pnpm install got@11
+
+
+
+
+
+
+
+
