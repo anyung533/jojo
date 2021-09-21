@@ -1,3 +1,9 @@
+/*
+
+21 4,12,20 * * * jd_work_price.js
+
+*/
+
 let common = require("./function/common");
 let jsdom = require("jsdom");
 let $ = new common.env('京东保价');
@@ -12,7 +18,7 @@ $.setOptions({
 });
 $.readme = `
 48 */8 * * * task ${$.runfile}
-export ${$.runfile}=1  #输出购买订单保价内容,没什么用
+exprot ${$.runfile}=1  #输出购买订单保价内容,没什么用
 `
 eval(common.eval.mainEval($));
 async function prepare() {}
