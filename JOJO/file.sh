@@ -1,6 +1,6 @@
 #CK
 cp -rf /ql/repo/anyung533_jojo/ql_refreshCK.py /ql/scripts/
-cp -rf /ql/repo/anyung533_jojo/utils /ql/scripts/
+cp -rf /ql/repo/anyung533_jojo/utils/* /ql/scripts/
 
 
 
