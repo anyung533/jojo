@@ -1,7 +1,7 @@
 /*
 [task_local]
 #东东玩家
-20 0,8,17 * * * jd_ddwj.js
+20 0,8,17 * * * zy_ddwj.js
 
 */
 const $ = new Env('东东玩家')
@@ -76,9 +76,10 @@ for(let i = 0; i < cookiesArr.length; i++){
       $.isLogin = true;
       $.index = i + 1;
        console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}助力模块*********\n`);
-      await getsecretp()
-      await control()
-      await userScore()
+              console.log(`还不睡？都说让你洗洗睡了`);
+      //await getsecretp()
+      //await control()
+      //await userScore()
 }
 
 })()
