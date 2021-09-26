@@ -52,8 +52,8 @@ cron "47 4 23-28 9 *" script-path=https://raw.githubusercontent.com/smiek2221/sc
 
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
 
 const $ = new Env('9.23~9.28 婴乐家宠粉日');
