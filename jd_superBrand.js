@@ -26,7 +26,7 @@ const $ = new Env('特物Z|万物皆可国创');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const randomCount = $.isNode() ? 20 : 5;
-const Opencardtw= $.isNode() ? (process.env.Opencardtw?process.env.Opencardtw:false):false
+const Opencardtw= $.isNode() ? (process.env.Opencardtw?process.env.Opencardtw:true):true
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
 let codeList = []
