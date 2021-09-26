@@ -42,9 +42,9 @@ cron "47 3 22-30 9 *" script-path=https://raw.githubusercontent.com/smiek2221/sc
 9.22~9.30 女神狂欢 大牌盛典 = type=cron,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard37.js, cronexpr="47 3 22-30 9 *", timeout=3600, enable=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
-let guaopenwait = "0"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
+let guaopenwait = "5"
 
 const $ = new Env('9.22~9.30 女神狂欢 大牌盛典');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
