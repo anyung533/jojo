@@ -21,7 +21,7 @@ const $ = new Env('京东小魔方');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 let uuid
@@ -41,11 +41,11 @@ let allMessage = '';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  // $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateCash.json')
+  // $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-5lv/updateTeam/master/shareCodes/jd_updateCash.json')
   // if (!$.authorCode) {
-  //   $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+  //   $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron6-lv/updateTeam@master/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
   //   await $.wait(1000)
-  //   $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json') || []
+  //   $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron5-lv/updateTeam@master/shareCodes/jd_updateCash.json') || []
   // }
   $.shareCodesList = []
   for (let i = 0; i < cookiesArr.length; i++) {
