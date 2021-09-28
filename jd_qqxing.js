@@ -27,7 +27,7 @@ const randomCount = $.isNode() ? 20 : 5;
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
 let codeList = []
-Exchange = $.isNode() ? (process.env.Cowexchange ? process.env.Cowexchange : false) : ($.getdata("Cowexchange") ? $.getdata("Cowexchange") : false);
+Exchange = $.isNode() ? (process.env.Cowexchange ? process.env.Cowexchange : true) : ($.getdata("Cowexchange") ? $.getdata("Cowexchange") : true);
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '';
