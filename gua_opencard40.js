@@ -42,8 +42,8 @@ cron "47 1 * 9,10 *" script-path=https://raw.githubusercontent.com/smiek2221/scr
 9.28~10.8 礼惠国庆 大牌狂欢购 = type=cron,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard40.js, cronexpr="47 1 * 9,10 *", timeout=3600, enable=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
 
 const $ = new Env('9.28~10.8 礼惠国庆 大牌狂欢购');
