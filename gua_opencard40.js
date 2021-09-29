@@ -29,17 +29,17 @@ All变量适用
 ============Quantumultx===============
 [task_local]
 #9.28~10.8 礼惠国庆 大牌狂欢购
-47 1 * 9,10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard40.js, tag=9.28~10.8 礼惠国庆 大牌狂欢购, enabled=true
+47 1 * 9,10 * gua_opencard40.js, tag=9.28~10.8 礼惠国庆 大牌狂欢购, enabled=true
 
 ================Loon==============
 [Script]
-cron "47 1 * 9,10 *" script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard40.js,tag=9.28~10.8 礼惠国庆 大牌狂欢购
+cron "47 1 * 9,10 *" script-path=gua_opencard40.js,tag=9.28~10.8 礼惠国庆 大牌狂欢购
 
 ===============Surge=================
-9.28~10.8 礼惠国庆 大牌狂欢购 = type=cron,cronexp="47 1 * 9,10 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard40.js
+9.28~10.8 礼惠国庆 大牌狂欢购 = type=cron,cronexp="47 1 * 9,10 *",wake-system=1,timeout=3600,script-path=gua_opencard40.js
 
 ============小火箭=========
-9.28~10.8 礼惠国庆 大牌狂欢购 = type=cron,script-path=https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard40.js, cronexpr="47 1 * 9,10 *", timeout=3600, enable=true
+9.28~10.8 礼惠国庆 大牌狂欢购 = type=cron,script-path=gua_opencard40.js, cronexpr="47 1 * 9,10 *", timeout=3600, enable=true
 
 */
 let guaopencard_addSku = "true"
