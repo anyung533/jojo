@@ -5,9 +5,17 @@
 ============Quantumultx===============
 [task_local]
 #京东小魔方
-31 2,8,14,20 * * * jd_mf.js
+31 2,8 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_mf.js, tag=京东小魔方, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
+================Loon==============
+[Script]
+cron "31 2,8 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_mf.js,tag=京东小魔方
 
+===============Surge=================
+京东小魔方 = type=cron,cronexp="31 2,8 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_mf.js
+
+============小火箭=========
+京东小魔方 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_mf.js, cronexpr="31 2,8 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东小魔方');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -96,8 +104,8 @@ let allMessage = '';
 async function jdMofang() {
   console.log(`集魔方 赢大奖`)
   await getInteractionHomeInfo()
-  console.log(`\n集魔方 抽京豆 赢新品`)
-  await getInteractionInfo()
+  // console.log(`\n集魔方 抽京豆 赢新品`)
+  // await getInteractionInfo()
 }
 
 async function getInteractionHomeInfo() {
@@ -135,9 +143,9 @@ async function queryInteractiveInfo(encryptProjectId, sourceCode) {
               let vo = data.assignmentList[key]
               if (vo.ext.extraType === "sign1") {
                 console.log(`去做【${vo.assignmentName}】`)
-                let signDay = (vo.ext[vo.ext.extraType].signList && vo.ext[vo.ext.extraType].signList.length) || 0
-                $.type = vo.rewards[signDay].rewardType
                 if (vo.ext[vo.ext.extraType].status !== 2) {
+                  let signDay = (vo.ext[vo.ext.extraType].signList && vo.ext[vo.ext.extraType].signList.length) || 0
+                  $.type = vo.rewards[signDay].rewardType
                   await doInteractiveAssignment(vo.ext.extraType, encryptProjectId, sourceCode, vo.encryptAssignmentId, vo.ext[vo.ext.extraType].itemId)
                 } else {
                   console.log(`今日已签到`)
