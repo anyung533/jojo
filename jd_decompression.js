@@ -3,7 +3,7 @@
  * 第一个号会给作者助力，其他号会给第一个号助力，活动期间貌似只有一次助力机会
  cron  5 6,18 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_decompression.js
  */
-const $ = new Env('热血心跳,狂解压');
+const $ = new Env('9.21-10.16 热血心跳,狂解压');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
