@@ -34,8 +34,8 @@ All变量适用
 47 2 8-14 10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard41.js, tag=10.8~10.14 超店会员福利社, enabled=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
 
 const $ = new Env('10.8~10.14 超店会员福利社');
