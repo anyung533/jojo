@@ -32,7 +32,7 @@ All变量适用
 ============Quantumultx===============
 [task_local]
 #10.8~10.18 金秋好物盛典 福利来袭
-47 3 8-18 10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard42.js, tag=10.8~10.18 金秋好物盛典 福利来袭, enabled=true
+47 3 8-18 10 * gua_opencard42.js, tag=10.8~10.18 金秋好物盛典 福利来袭, enabled=true
 
 */
 let guaopencard_addSku = "true"

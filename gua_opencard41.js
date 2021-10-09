@@ -31,7 +31,7 @@ All变量适用
 ============Quantumultx===============
 [task_local]
 #10.8~10.14 超店会员福利社
-47 2 8-14 10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard41.js, tag=10.8~10.14 超店会员福利社, enabled=true
+47 2 8-14 10 * gua_opencard41.js, tag=10.8~10.14 超店会员福利社, enabled=true
 
 */
 let guaopencard_addSku = "true"
