@@ -35,8 +35,8 @@ All变量适用
 47 4 11-26 10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard43.js, tag=10.11~10.26 惠聚京东 好物连连, enabled=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
 
 const $ = new Env('10.11~10.26 惠聚京东 好物连连');
