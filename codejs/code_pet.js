@@ -4,7 +4,7 @@
 =================================Quantumultx=========================
 [task_local]
 #东东萌宠
-2 0-23/3 * * * code_pet.js
+40 3-23/3 * * * code_pet.js
 
 
 
@@ -20,6 +20,7 @@ let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好�
 ]
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
+let Code_num = process.env.code_num || 20;   //内置助力人数
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let randomCount = $.isNode() ? 20 : 5;
@@ -29,7 +30,7 @@ let randomCount = $.isNode() ? 20 : 5;
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < Code_num; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
