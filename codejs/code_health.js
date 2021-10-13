@@ -3,7 +3,7 @@
 ===================quantumultx================
 [task_local]
 #东东健康社区
-2 0-23/3 * * * code_health.js
+40 3-23/3 * * * code_health.js
 
 
  */
@@ -14,6 +14,7 @@ let cookiesArr = [], cookie = "", allMessage = "", message;
 const inviteCodes = [
 `123@123`,
 ]
+let Code_num = process.env.code_num || 20;   //内置助力人数
 let reward = process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : ''
 const randomCount = $.isNode() ? 20 : 5;
 if ($.isNode()) {
@@ -32,7 +33,7 @@ const JD_API_HOST = "https://api.m.jd.com/";
     return;
   }
   await requireConfig()
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < Code_num; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
