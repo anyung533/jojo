@@ -3,7 +3,7 @@
 ============Quantumultx===============
 [task_local]
 #闪购盲盒
-2 0-23/3 * * * code_sgmh.js
+40 3-23/3 * * * code_sgmh.js
 
 
  */
@@ -18,6 +18,7 @@ const inviteCodes = [
 const randomCount = $.isNode() ? 20 : 5;
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
+let Code_num = process.env.code_num || 20;   //内置助力人数
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -36,7 +37,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
     return;
   }
   await requireConfig();
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < Code_num; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
