@@ -3,7 +3,7 @@
 ============Quantumultx===============
 [task_local]
 #京喜工厂
-2 0-23/3 * * * code_dreamFactory.js
+40 3-23/3 * * * code_dreamFactory.js
 
 
  */
@@ -19,6 +19,7 @@ const randomCount = $.isNode() ? 20 : 5;
 let tuanActiveId = ``, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
+let Code_num = process.env.code_num || 20;   //内置助力人数
 const inviteCodes = [''];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [];
@@ -42,7 +43,7 @@ if ($.isNode()) {
   }
   await requestAlgo();
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < Code_num; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
