@@ -3,7 +3,7 @@
 ============Quantumultx===============
 [task_local]
 #京喜财富岛
-2 0-23/3 * * * code_cfd.js, tag=京喜财富岛助力码
+40 3-23/3 * * * code_cfd.js, tag=京喜财富岛助力码
 
  */
 !function (t, r) { "object" == typeof exports ? module.exports = exports = r() : "function" == typeof define && define.amd ? define([], r) : t.CryptoJS = r() }(this, function () {
@@ -24,6 +24,7 @@ $.shareCodes = [];
 let cookiesArr = [], cookie = '', token = '';
 let UA, UAInfo = {}
 let nowTimes;
+let Code_num = process.env.code_num || 20;   //内置助力人数
 
 const randomCount = $.isNode() ? 3 : 3;
 if ($.isNode()) {
@@ -52,7 +53,7 @@ $.appId = 10028;
     res = await getAuthorShareCode('')
   }
   $.strMyShareIds = [...(res && res.shareId || [])]
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < Code_num; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -86,7 +87,7 @@ async function cfd() {
   try {
     nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000)
     let beginInfo = await getUserInfo();
-    if (beginInfo.Fund.ddwFundTargTm === 0) {
+    if (1 == 0) {
       console.log(`还未开通活动，尝试初始化`)
       await noviceTask()
       await $.wait(2000)
