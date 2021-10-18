@@ -1,16 +1,5 @@
 /*
-店铺签到，各类店铺签到，有新的店铺直接添加token即可
-============Quantumultx===============
-[task_local]
-#店铺签到
-0 0 * * * https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js, tag=店铺签到, enabled=true
-===========Loon============
-[Script]
-cron "0 0 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js,tag=店铺签到
-============Surge=============
-店铺签到 = type=cron,cronexp="0 0 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js
-===========小火箭========
-店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.jss, cronexpr="0 0 * * *", timeout=3600, enable=true
+cron 1 0,1,8 * * * jd_dpqd.js, tag=店铺签到diy
 */
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -25,26 +14,18 @@ let vender=''
 let num=0
 let shopname=''
 const token = [
+  "693134A86CB062857521208772D4B08D", 
+  "9484C0363A266DB7B568D0D84AB99597", 
+  "309B9819ED3B467D24F42771E37223F1", 
+  "5DF65F61AFEF2C33C5E9A6533AFB1326", 
+  "7B68554B9F91FA421C3BD7D81297964A",  
+  "4D740B0DD1514405BE15425423D3518E",
   "C42A5A817AFEFD928254B42D3249873B",
-  "32BCC4761C4F50A8173C5E0B9FE52A6E",
-  "9745341EAF7A0D198BB2D3ED10E538CB",
   "1278D2D9916E3BAC83FCB2636E85D756",
-  "1C031CDF02B934C060936F1FB5ABF062",
-  "90FF9108E3769B3C0FA04B723F692EB7",
-  "9EACB4A30B9E44DBC2780BEF1E5D2C8C",
   "AB5172B51CF895DB51A9C9CAE86DF17B",
-  "AE67114D509F65CF7BF7ADD27419489D",
   "407910EA26539B7058C483ACAAD92EA8",
-  "FBD586E1BA834B20BD4CC7CC04C3D0BD",
-  "E2C480571521C4CC992AF19BB6B4978E",
-  "A82BB3D06455B9674F63F48979A73BCC",
-  "7DC877395EBDCFE3C3E6031782CAB049",
   "50A6EFF0F4CFCE65B0FA46CF0A23DB53",
-  "95FB2047E4912D89A9394B446C118E08",
-  "3A5DA1F4D7BE40E65654C733F7333657",
   "6DA953F013BAF9AC80B074A15752048F",
-  "C30B2DCBE52B8830CA52B5D7FFB1FC12",
-  "2F18BA1F94BB3F601ADC5CB0756F32BB"
 ]
 
 if ($.isNode()) {
