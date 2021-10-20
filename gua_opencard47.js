@@ -32,11 +32,11 @@ All变量适用
 ============Quantumultx===============
 [task_local]
 #10.19~10.25 大牌强联合 好物提前购
-47 3 19-25 10 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard47.js, tag=10.19~10.25 大牌强联合 好物提前购, enabled=true
+47 3 19-25 10 * gua_opencard47.js, tag=10.19~10.25 大牌强联合 好物提前购, enabled=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
 
 const $ = new Env('10.19~10.25 大牌强联合 好物提前购');
