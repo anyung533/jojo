@@ -25,8 +25,8 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1E1NXxq0'];
-let appNameArr = ['众筹许愿池'];
+let appIdArr = ['1E1NXxq0', '1FV1VwKc'];
+let appNameArr = ['众筹许愿池', '惊喜大作战'];
 let appId, appName;
 $.shareCode = [];
 if ($.isNode()) {
@@ -68,11 +68,11 @@ if ($.isNode()) {
       }
     }
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/wish.json')
+  let res = await getAuthorShareCode('')
   if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    $.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json')
+    res = await getAuthorShareCode('')
   }
   $.shareCode = [...$.shareCode, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
