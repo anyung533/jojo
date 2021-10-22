@@ -1,4 +1,4 @@
-//0 * * * * 环游记 自动入会、签到、任务、升级、开宝箱、捡金币
+//22 6,11,16 * * * jd_hyj.js环游记 自动入会、签到、任务、升级、开宝箱、捡金币
 //半残品随便跑跑
 const $ = new Env('环游记');
 
@@ -149,7 +149,8 @@ $.shareCodesArr = [];
                                         console.log(`\n\n ${task.brandMemberVos[o].title}`)
                                         memberUrl = task.brandMemberVos[o].memberUrl
                                         memberUrl = transform(memberUrl)
-                                        await join(task.brandMemberVos[o].vendorIds, memberUrl.channel, memberUrl.shopId ? memberUrl.shopId : "")
+                                        if (i < 10) //限制开卡账号数目
+                                            await join(task.brandMemberVos[o].vendorIds, memberUrl.channel, memberUrl.shopId ? memberUrl.shopId : "")
                                         await travel_collectScore(task.brandMemberVos[o].taskToken, task.taskId)
                                     }
 
