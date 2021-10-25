@@ -1,6 +1,24 @@
 /*
 活动入口：首页 -> 领券 -> 集卡赢大奖
-cron 10 7,21 * * * jd_jika.js
+更新地址：https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js
+
+助力逻辑：优先账号内互助，有剩余助力次数再帮我助力
+
+助力代码抄自 @束缚嘉 大佬，感谢！
+============Quantumultx===============
+[task_local]
+#集萌宝得团圆礼包
+10 0,8,23 * * * https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js, tag=集萌宝得团圆礼包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+
+================Loon==============
+[Script]
+cron "10 0,8,23 * * *" script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js, tag=集萌宝得团圆礼包
+
+===============Surge=================
+集萌宝得团圆礼包 = type=cron,cronexp="10 0,8,23 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js
+
+============小火箭=========
+集萌宝得团圆礼包 = type=cron,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_jika.js, cronexpr="10 0,8,23 * * *", timeout=200, enable=true
  */
 const $ = new Env('集魔力卡召唤大奖');
 const notify = $.isNode() ? require('./sendNotify') : '';
