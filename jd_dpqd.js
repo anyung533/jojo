@@ -1,16 +1,5 @@
 /*
-店铺签到，各类店铺签到，有新的店铺直接添加token即可
-============Quantumultx===============
-[task_local]
-#店铺签到
-0 0 * * * https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js, tag=店铺签到, enabled=true
-===========Loon============
-[Script]
-cron "0 0 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js,tag=店铺签到
-============Surge=============
-店铺签到 = type=cron,cronexp="0 0 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js
-===========小火箭========
-店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.jss, cronexpr="0 0 * * *", timeout=3600, enable=true
+cron 1 0,1,8 * * * jd_dpqd.js, tag=店铺签到diy
 */
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -25,26 +14,26 @@ let vender=''
 let num=0
 let shopname=''
 const token = [
-  '407910EA26539B7058C483ACAAD92EA8',
-  "6DA953F013BAF9AC80B074A15752048F",
-  "5BFD60270889439B26FCEA611D299A1B",
-  "68B823FFD5F0E4326E3256E05E102280",
-  "C7DB74FE1C4A277C5255F47E36F91385",
-  "2CD290865D5844EA6951B5778A2C7379",
-  "638D7446A5712C226B334665166ECFD9",
-  "D6A17A7F1539CBE862B497AE28B43640",
-  "AD99BCBA54631403705513AFD0380FFB",
-  "A67EE89F75D841DFA0E81269C872A56A",
-  "21B467B63E7A29AD69F9D8F9EA5C7FFA",
-  "E1B7DFEA951EFBFB8F784946395A929C",
-  "2BEA7A205AC8A7BCA8CD2FE7676D3A70",
-  "22ECFD02E668A1F79C0AEED74FE8AFD2",
-  "A3940D25074AB4A76D3FA980D9522C5E",
-  "683AE0D29369031C13999D7E57FD3972",
-  "82791599DCC2499B70C6F346FEBB0485",
-  "71FB1DDD060FA8D1828008B96DD86A8D",
-  "429614CFC51B3B3996CC3DAEEB3A4536",
-  "D5C3FB5F28FA674622868E15E389F4B0",
+    '4CF726D04EFB7040CA7E21BED9773A53',//100豆10.27/2000份
+    'F93A99F9ADBD37FB62A665B73B55C325',//3天50豆300份10.27
+    'B942DEA1AC6239FAFD7AC5D117E8B11A',//5天50豆500份10.27
+    '65343826EC10D5480DB841F169D696CE',//7天30豆10.27
+    'A467EF3AEF6F753E41D2B62FE4B5040F',//7天1元E卡50份10.28
+    '472E00EFB212DCDFEAFF75D5B4D1AB7C',//50豆10.28/100豆10.30/100份
+    '957E3AC33A01E4A04F9FB64225514678',//3天50豆500份10.28
+    'F3041A3FA51482F3B922B52787473822',//3天50豆200份10.28
+    '957B01C38A13E7183382DFED1A60D7F5',//40豆10.28/70豆10.30/11.1/200份
+    '4908AB0D78BDD0907524470B8E045C7A',//7天50豆 380份10.29
+    '173EB22121AD3A384E07CF5444F7CD0A',//7天50豆 140份10.29
+    '2DACC15328D8879CEA26218677A47892',//70豆10.28/100豆11.12
+    '00ECB3350B75428B47CBAFFA58FABE64',//100豆10.29/100份
+    'B7A41C802FF6C0352FDB3DBF1DABB990',//7天3元红包30份10.30
+    'A91D9F6823B1F65EC5DE11BB9C7BB65D',//10天80豆300份10.30
+    'E38D6E0D10EF1756AA3195312F5A4E3D',//10天50豆100份10.30
+    'EE9F559E5146A758C3B29C24ECAC14F5',//11天100豆50份10.31
+    '4648763DE1B2437935609DD50382D662',//7天50豆1000份11.1
+    'F8E1AD7D0699A511C41BDE49B2B723E1',//30天100豆100份11.14
+    '373C4C1263528987107F97A9EC281C00',//20天100豆300份11.9
 ]
 
 if ($.isNode()) {
@@ -63,6 +52,7 @@ if ($.isNode()) {
 }
 
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
