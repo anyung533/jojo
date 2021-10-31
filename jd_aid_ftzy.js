@@ -15,7 +15,7 @@ $.setOptions({
 });
 $.readme = `
 0 0 * * * task ${$.runfile}
-exprot ${$.runfile}=2  # 如需修改被助力账号个数,请自行修改环境变量
+exprot ${$.runfile}=10  # 如需修改被助力账号个数,请自行修改环境变量
 `
 eval(common.eval.mainEval($));
 async function prepare() {
