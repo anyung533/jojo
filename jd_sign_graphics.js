@@ -1,5 +1,5 @@
 /* 
-cron 14 10 * * * https://raw.githubusercontent.com/smiek2221/scripts/master/jd_sign_graphics.js
+cron 14 10,18 * * * https://raw.githubusercontent.com/smiek2221/scripts/master/jd_sign_graphics.js
 只支持nodejs环境
 需要安装依赖 
 npm i png-js 或者 npm i png-js -S
@@ -9,7 +9,7 @@ npm i png-js 或者 npm i png-js -S
 修改域名 https://jdjoy.jd.com 可以改成ip https://49.7.27.236
 */
 
-const validator = require('./JDJRValidator_Smiek.js');
+const validator = require('./JDJRValidator_Pure.js');
 const Faker=require('./sign_graphics_validate.js') 
 
 const $ = new Env('京东签到图形验证');
@@ -33,7 +33,7 @@ let signFlag = false
 let successNum = 0
 let errorNum = 0
 let JD_API_HOST = 'https://jdjoy.jd.com'
-$.invokeKey = 'JL1VTNRadM68cIMQ'
+$.invokeKey = 'q8DNJdpcfRQ69gIx'
 $.invokeKey = $.isNode() ? (process.env.JD_invokeKey ? process.env.JD_invokeKey : `${$.invokeKey}`) : ($.getdata('JD_invokeKey') ? $.getdata('JD_invokeKey') : `${$.invokeKey}`);
 let lkt = 0
 if(process.env.JOY_HOST){
@@ -56,6 +56,7 @@ $.get = validator.injectToRequest($.get.bind($), 'channelSign', $.UA)
 $.post = validator.injectToRequest($.post.bind($), 'channelSign', $.UA)
 
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;

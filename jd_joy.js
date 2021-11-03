@@ -10,18 +10,12 @@ Combine from Zero-S1/JD_tools(https://github.com/Zero-S1/JD_tools)
 ==========Quantumult X==========
 [task_local]
 #京东宠汪汪
-15 0-23/2 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy.js, tag=京东宠汪汪, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
+33 1-23/2 * * * jd_joy.js, tag=京东宠汪汪, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
 
-============Loon===========
-[Script]
-cron "15 0-23/2 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy.js,tag=京东宠汪汪
 
-============Surge==========
-[Script]
-京东宠汪汪 = type=cron,cronexp="15 0-23/2 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy.js
 
-===============小火箭==========
-京东宠汪汪 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy.js, cronexpr="15 0-23/2 * * *", timeout=3600, enable=true
+
+
 */
 const $ = new Env('宠汪汪');
 const zooFaker = require('./utils/JDJRValidator_Pure');
@@ -50,6 +44,7 @@ let joyRunFlag = true;
 let jdNotify = true;//是否开启静默运行，默认true开启
 let joyRunNotify = true;//宠汪汪赛跑获胜后是否推送通知，true推送，false不推送通知
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
@@ -400,7 +395,7 @@ async function appPetTask() {
 }
 function getDeskGoodDetails() {
   return new Promise(resolve => {
-    const url = "https://jdjoy.jd.com/common/pet/getDeskGoodDetails?invokeKey=JL1VTNRadM68cIMQ"
+    const url = "https://jdjoy.jd.com/common/pet/getDeskGoodDetails?invokeKey=q8DNJdpcfRQ69gIx"
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -423,7 +418,7 @@ function followScan(sku) {
       "taskType": "ScanDeskGood",
       sku
     }
-    const url = `https://jdjoy.jd.com/common/pet/scan?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/scan?invokeKey=q8DNJdpcfRQ69gIx`
     $.post(taskPostUrl(url, body), (err, resp, data) => {
       try {
         if (err) {
@@ -443,7 +438,7 @@ function followScan(sku) {
 //小程序逛会场，浏览频道，关注商品API
 function scanMarket(type, body) {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/${type}?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/${type}?invokeKey=q8DNJdpcfRQ69gIx`
     $.post(taskPostUrl(url, body), (err, resp, data) => {
       try {
         if (err) {
@@ -462,7 +457,7 @@ function scanMarket(type, body) {
 }
 function doScanMarket(type, body) {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/icon/click?iconCode=${type}&linkAddr=${body}&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/icon/click?iconCode=${type}&linkAddr=${body}&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -483,7 +478,7 @@ function doScanMarket(type, body) {
 //app逛会场
 function appScanMarket(type, body) {
   return new Promise(resolve => {
-    const url = `https://jdjoy.jd.com/common/pet/${type}?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/${type}?invokeKey=q8DNJdpcfRQ69gIx`
     $.post(taskPostUrl(url, body), (err, resp, data) => {
       try {
         if (err) {
@@ -505,7 +500,7 @@ function appScanMarket(type, body) {
 //领取狗粮API
 function getFood(type) {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/getFood?taskType=${type}&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/getFood?taskType=${type}&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -526,7 +521,7 @@ function getFood(type) {
 function followShop(shopId) {
   return new Promise(resolve => {
     const body = `shopId=${shopId}`;
-    const url = `https://draw.jdfcloud.com//common/pet/followShop?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/followShop?invokeKey=q8DNJdpcfRQ69gIx`
     $.post(taskPostUrl(url, body), (err, resp, data) => {
       try {
         if (err) {
@@ -545,7 +540,7 @@ function followShop(shopId) {
 }
 function dofollowShop(shopId) {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/icon/click?iconCode=follow_shop&linkAddr=${shopId}&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/icon/click?iconCode=follow_shop&linkAddr=${shopId}&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -565,8 +560,8 @@ function dofollowShop(shopId) {
 
 function enterRoom() {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/enterRoom/h5?invitePin=&openId=&invokeKey=JL1VTNRadM68cIMQ`
-    $.post(taskPostUrl(url), (err, resp, data) => {
+    const url = `https://draw.jdfcloud.com//common/pet/enterRoom/h5?invitePin=&openId=&invokeKey=q8DNJdpcfRQ69gIx`
+    $.post(taskPostUrl(url, {}), (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
@@ -587,7 +582,7 @@ function enterRoom() {
 }
 function appGetPetTaskConfig() {
   return new Promise(resolve => {
-    const url = `https://jdjoy.jd.com/common/pet/getPetTaskConfig?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/getPetTaskConfig?invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -610,7 +605,7 @@ function feedPets(feedNum) {
     console.log(`您设置的喂食数量:${FEED_NUM}g\n`);
     if (FEED_NUM === 0) { console.log(`跳出喂食`);resolve();return }
     console.log(`实际的喂食数量:${feedNum}g\n`);
-    const url = `https://draw.jdfcloud.com//common/pet/feed?feedCount=${feedNum}&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/feed?feedCount=${feedNum}&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), async (err, resp, data) => {
       try {
         if (err) {
@@ -658,7 +653,7 @@ function feedPets(feedNum) {
 }
 function getPetTaskConfig() {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/getPetTaskConfig?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/getPetTaskConfig?invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -678,7 +673,7 @@ function getPetTaskConfig() {
 //查询赛跑信息API
 function getPetRace() {
   return new Promise(resolve => {
-    const url = `https://jdjoy.jd.com/common/pet/combat/detail/v2?help=false&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/combat/detail/v2?help=false&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -699,7 +694,7 @@ function getPetRace() {
 function getRankList() {
   return new Promise(resolve => {
     $.raceUsers = [];
-    const url = `https://jdjoy.jd.com/common/pet/combat/getRankList?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/combat/getRankList?invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -725,7 +720,7 @@ function runMatch(teamLevel, timeout = 5000) {
   console.log(`正在参赛中，请稍等${timeout / 1000}秒，以防多个账号匹配到统一赛场\n`)
   return new Promise(async resolve => {
     await $.wait(timeout);
-    const url = `https://jdjoy.jd.com/common/pet/combat/match?teamLevel=${teamLevel}&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/combat/match?teamLevel=${teamLevel}&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -745,7 +740,7 @@ function runMatch(teamLevel, timeout = 5000) {
 //查询应援团信息API
 function getBackupInfo() {
   return new Promise(resolve => {
-    const url = `https://jdjoy.jd.com/common/pet/combat/getBackupInfo?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/combat/getBackupInfo?invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -765,7 +760,7 @@ function getBackupInfo() {
 //查询赛跑获得多少积分
 function getWinCoin() {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/combat/detail/v2?help=false&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/combat/detail/v2?help=false&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -787,7 +782,7 @@ function getWinCoin() {
 //领取赛跑奖励API
 function receiveJoyRunAward() {
   return new Promise(resolve => {
-    const url = `https://jdjoy.jd.com/common/pet/combat/receive?invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://jdjoy.jd.com/common/pet/combat/receive?invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -828,7 +823,7 @@ async function energySupplyStation(showOrder) {
 }
 function getSupplyInfo(showOrder) {
   return new Promise(resolve => {
-    const url = `https://draw.jdfcloud.com//common/pet/combat/getSupplyInfo?showOrder=${showOrder}&invokeKey=JL1VTNRadM68cIMQ`
+    const url = `https://draw.jdfcloud.com//common/pet/combat/getSupplyInfo?showOrder=${showOrder}&invokeKey=q8DNJdpcfRQ69gIx`
     $.get(taskUrl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -896,7 +891,7 @@ function TotalBean() {
 }
 function taskUrl(url) {
   let lkt = new Date().getTime()
-  let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
+  let lks = $.md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
   let Host = url.split('/')[2]
   if (Host === "jdjoy.jd.com") {
     url += "&reqSource=h5"
@@ -933,18 +928,25 @@ function taskUrl(url) {
     }
   }
 }
-function taskPostUrl(url, body = {}) {
+function taskPostUrl(url, body) {
   let lkt = new Date().getTime()
-  let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
+  let lks = $.md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
   let Host = url.split('/')[2]
+  let CT
+  if (url.indexOf('followShop') > -1 || url.indexOf('followGood') > -1) {
+    CT = `application/x-www-form-urlencoded`
+  } else {
+    CT = `application/json`
+    body = JSON.stringify(body)
+  }
   if (Host === "jdjoy.jd.com") {
     url += "&reqSource=h5"
     return {
       url: url + $.validate,
-      body: JSON.stringify(body),
+      body,
       headers: {
         "Host": "jdjoy.jd.com",
-        "Content-Type": "application/json",
+        "Content-Type": CT,
         "Accept": "*/*",
         "Accept-Language": "zh-CN,zh-Hans;q=0.9",
         "Accept-Encoding": "gzip, deflate, br",
@@ -960,11 +962,11 @@ function taskPostUrl(url, body = {}) {
     url += "&reqSource=weapp"
     return {
       url: url + $.validate,
-      body: JSON.stringify(body),
+      body,
       headers: {
         "Host": "draw.jdfcloud.com",
         "Connection": "keep-alive",
-        "Content-Type": "application/json",
+        "Content-Type": CT,
         "Accept-Encoding": "gzip,compress,br,deflate",
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.15(0x18000f25) NetType/WIFI Language/zh_CN",
         "Referer": "https://servicewechat.com/wxccb5c536b0ecd1bf/760/page-frame.html",
