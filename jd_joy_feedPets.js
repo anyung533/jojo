@@ -1,24 +1,9 @@
 /*
-宠汪汪喂食(如果喂食80g失败，降级一个档次喂食（40g）,依次类推),三餐，建议一小时运行一次
-更新时间：2021-6-6
-活动入口：京东APP我的-更多工具-宠汪汪
-支持京东多个账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ==============Quantumult X==============
 [task_local]
 #京东宠汪汪喂食
-15 0-23/1 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_feedPets.js, tag=京东宠汪汪喂食, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
+15 0-23/1 * * * jd_joy_feedPets.js
 
-==============Loon===============
-[Script]
-cron "15 0-23/1 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_feedPets.js,tag=京东宠汪汪喂食
-
-=========Surge=============
-[Script]
-京东宠汪汪喂食 = type=cron,cronexp="15 0-23/1 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_feedPets.js
-
-===============小火箭==========
-京东宠汪汪喂食 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_feedPets.js, cronexpr="15 0-23/1 * * *", timeout=3600, enable=true
 */
 const $ = new Env('宠汪汪🐕喂食');
 const zooFaker = require('./utils/JDJRValidator_Pure');
@@ -39,8 +24,10 @@ if ($.isNode()) {
 let jdNotify = true;//是否开启静默运行。默认true开启
 let message = '', subTitle = '';
 const JD_API_HOST = 'https://jdjoy.jd.com'
-let FEED_NUM = ($.getdata('joyFeedCount') * 1) || 10;   //喂食数量默认10g,可选 10,20,40,80 , 其他数字不可.
+let FEED_NUM = ($.getdata('joyFeedCount') * 1) || 80;   //喂食数量默认10g,可选 10,20,40,80 , 其他数字不可.
+
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
@@ -101,9 +88,9 @@ function feedPets(feedNum) {
     console.log(`您设置的喂食数量::${FEED_NUM}g\n`);
     if (FEED_NUM === 0) { console.log(`跳出喂食`);resolve();return }
     console.log(`实际的喂食数量::${feedNum}g\n`);
-    const url = `https://jdjoy.jd.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5&invokeKey=JL1VTNRadM68cIMQ` + $.validate;
+    const url = `https://jdjoy.jd.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5&invokeKey=q8DNJdpcfRQ69gIx` + $.validate;
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
+    let lks = $.md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
     const options = {
       url,
       headers: {
@@ -165,9 +152,9 @@ function feedPets(feedNum) {
 //三餐
 function ThreeMeals() {
   return new Promise(resolve => {
-    const url = `https://jdjoy.jd.com/common/pet/getFood?taskType=ThreeMeals&reqSource=h5&invokeKey=JL1VTNRadM68cIMQ` + $.validate
+    const url = `https://jdjoy.jd.com/common/pet/getFood?taskType=ThreeMeals&reqSource=h5&invokeKey=q8DNJdpcfRQ69gIx` + $.validate
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
+    let lks = $.md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
     const options = {
       url,
       headers: {
