@@ -4,22 +4,22 @@
 入口：我的-赚30
 备注：赚30元每日签到红包、天降红包助力，在earn30Pins环境变量中填入需要签到和接受助力的账号。
 技巧：每月可以提现100元，但需要邀请一个新人下首单。可以用已注册手机号重新注册为新人账号，切换ip可以提高成功率。
-助力逻辑：优先账号内互助，再帮zero205助力
 TG学习交流群：https://t.me/cdles
 3 1,6 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_earn30.js
 */
 const $ = new Env("赚30元")
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random() * 4 + 10)}.${Math.ceil(Math.random() * 4)};${randomString(40)}`
+const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 var pins = process.env.earn30Pins ? process.env.earn30Pins : '';
 let cookiesArr = [];
 var helps = [];
 var tools = [];
+var timeout = 0;
 !(async () => {
      if (!pins) {
           console.log("未填写环境变量earn30Pins，默认所有账号")
      }
-     await requireConfig()
+     requireConfig()
      for (let i in cookiesArr) {
           i = +i
           cookie = cookiesArr[i]
@@ -27,7 +27,7 @@ var tools = [];
                var data = await requestApi('createSplitRedPacket', cookie, {
                     scene: 3
                });
-               if (data) {
+               if(data){
                     if (data.code === 0 && data.SplitRedPacketInfo) {
                          helps.push({
                               redPacketId: data.SplitRedPacketInfo.redPacketId,
@@ -37,7 +37,7 @@ var tools = [];
                          })
                     } else if (data.code === 1) {
                          data = await requestApi('getSplitRedPacket', cookie);
-                         if (data && data.code === '0' && data.SplitRedPacketInfo) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
+                         if (data && data.code === '0' && data.SplitRedPacketInfo ) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
                               helps.push({
                                    redPacketId: data.SplitRedPacketInfo.redPacketId,
                                    shareCode: data.SplitRedPacketInfo.shareCode,
@@ -50,48 +50,43 @@ var tools = [];
                data = await requestApi('fpSign', cookie);
                if (data) {
                     if (data.code === 1) {
-                         console.log(`${i + 1} 已经签到过了`)
+                         console.log(`${i+1} 已经签到过了`)
                     } else if (data.code === '0') {
-                         console.log(`${i + 1} 签到获得${data.money}`)
+                         console.log(`${i+1} 签到获得${data.money}`)
                     } else {
-                         console.log(`${i + 1} 签到失败`)
+                         console.log(`${i+1} 签到失败`)
                     }
-               }
+               }               
           }
           tools.push({
                id: i,
                cookie: cookie,
-               helps: [],
+               helps:[],
+               times: 0,
           })
      }
-     let tools_temp;
-     if ($.isNode()) {
-          const v8 = require('v8');
-          const structuredClone = obj => {
-               return v8.deserialize(v8.serialize(obj));
-          };
-          tools_temp = structuredClone(tools);
-     }
-     for (let help of helps) {
+     timeout = helps.length*2
+     for(let help of helps){
           while (tools.length) {
                var tool = tools.pop()
-               var data = await requestApi('splitRedPacket', tool.cookie, { shareCode: help.shareCode, groupCode: help.redPacketId });
-               if (data) {
-                    if (tool.id == help.id) {
-                         continue
-                    }
-                    console.log(`${tool.id + 1}->${help.id + 1} ${data.text}`)
-                    if (tool.helps.indexOf(help.id) != -1) {
+               tool.times++
+               var data = await requestApi('splitRedPacket', tool.cookie, {shareCode:help.shareCode,groupCode:help.redPacketId});
+               if(data){
+                    if(tool.times >= timeout){
                          break
                     }
-                    if (data.text == "我的红包已拆完啦") {
+                    console.log(`${tool.id+1}->${help.id+1} ${data.text}`)
+                    if(tool.helps.indexOf(help.id) != -1){
+                         break
+                    }
+                    if(data.text == "我的红包已拆完啦"){
                          tools.unshift(tool)
                          break
                     }
-                    if (data.text.indexOf("帮拆出错") != -1) {
+                    if(data.text.indexOf("帮拆出错")!=-1 && tool.id != help.id){
                          continue
                     }
-                    if (data.text.indexOf("帮拆次数已达上限") != -1) {
+                    if(data.text.indexOf("帮拆次数已达上限")!=-1){
                          continue
                     }
                     tool.helps.push(help.id)
@@ -99,43 +94,9 @@ var tools = [];
                }
           }
      }
-     if ($.isNode()) {
-          tools = tools_temp;
-          await getCode()
-          if ($.zero205 && $.zero205.length) {
-               console.log(`内部互助已完成，开始帮【zero205】助力，感谢！`)
-               for (let help of $.zero205) {
-                    while (tools.length) {
-                         var tool = tools.pop()
-                         var data = await requestApi('splitRedPacket', tool.cookie, { shareCode: help.shareCode, groupCode: help.redPacketId });
-                         if (data) {
-                              if (tool.id == help.id) {
-                                   continue
-                              }
-                              console.log(`${tool.id + 1}->${help.id + 1} ${data.text}`)
-                              if (tool.helps.indexOf(help.id) != -1) {
-                                   break
-                              }
-                              if (data.text == "我的红包已拆完啦") {
-                                   tools.unshift(tool)
-                                   break
-                              }
-                              if (data.text.indexOf("帮拆出错") != -1) {
-                                   continue
-                              }
-                              if (data.text.indexOf("帮拆次数已达上限") != -1) {
-                                   continue
-                              }
-                              tool.helps.push(help.id)
-                              tools.unshift(tool)
-                         }
-                    }
-               }
-          }
-     }
 })().catch((e) => {
-     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-})
+          $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+     })
      .finally(() => {
           $.done();
      })
@@ -173,7 +134,7 @@ function requireConfig() {
                          cookiesArr.push(jdCookieNode[item])
                     }
                })
-               if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => { };
+               if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
           } else {
                cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
           }
@@ -191,30 +152,6 @@ function randomString(e) {
           n += t.charAt(Math.floor(Math.random() * a));
      return n
 }
-
-function getCode() {
-     return new Promise(resolve => {
-         $.get({
-             url: "https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/30.json",
-             headers: {
-                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-             }
-         }, async (err, resp, data) => {
-             try {
-                 if (err) {
-                     console.log(`${JSON.stringify(err)}`);
-                     console.log(`${$.name} API请求失败，请检查网路重试`);
-                 } else {
-                     $.zero205 = JSON.parse(data);
-                 }
-             } catch (e) {
-                 $.logErr(e, resp)
-             } finally {
-                 resolve();
-             }
-         })
-     })
- }
 
 function Env(t, e) {
      "undefined" != typeof process && JSON.stringify(process.env).indexOf("GIT_HUB") > -1 && process.exit(0);
@@ -275,7 +212,7 @@ function Env(t, e) {
                const i = this.getdata(t);
                if (i) try {
                     s = JSON.parse(this.getdata(t))
-               } catch { }
+               } catch {}
                return s
           }
           setjson(t, e) {
@@ -387,7 +324,7 @@ function Env(t, e) {
           initGotEnv(t) {
                this.got = this.got ? this.got : require("got"), this.cktough = this.cktough ? this.cktough : require("tough-cookie"), this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar, t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar))
           }
-          get(t, e = (() => { })) {
+          get(t, e = (() => {})) {
                t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
                     "X-Surge-Skip-Scripting": !1
                })), $httpClient.get(t, (t, s, i) => {
@@ -437,7 +374,7 @@ function Env(t, e) {
                     e(s, i, i && i.body)
                }))
           }
-          post(t, e = (() => { })) {
+          post(t, e = (() => {})) {
                if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
                     "X-Surge-Skip-Scripting": !1
                })), $httpClient.post(t, (t, s, i) => {
