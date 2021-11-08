@@ -19,7 +19,7 @@ let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好�
   '123@123',
 ]
 let message = '', subTitle = '', option = {};
-let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 let Code_num = process.env.code_num || 20;   //内置助力人数
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
