@@ -4,7 +4,9 @@
 # @File    : jd_cnl.py
 # @Project : jd_scripts
 # @Cron    : 33 6,17 * * *
+33 6,17 * * * jd_good_live.py
 # @Desc    : 京东APP-好物好生活
+
 
 from utils.jd_common import JdCommon
 from config import USER_AGENT
