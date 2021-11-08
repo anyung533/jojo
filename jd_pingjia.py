@@ -10,7 +10,9 @@ Date: 2021/10/30 上午10:58
 update: 2021.11.6 13:21
 建议cron: 0 0 8 ? * WED  python3 jd_Evaluation.py
 '''
-22 0 * * * jd_Evaluation.py
+22 0 * * * jd_pingjia.py
+
+22 0 * * * jd_pingjia.py
 
 import os
 import random
