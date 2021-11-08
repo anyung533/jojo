@@ -12,8 +12,6 @@ update: 2021.11.6 13:21
 '''
 22 0 * * * jd_pingjia.py
 
-22 0 * * * jd_pingjia.py
-
 import os
 import random
 import re
