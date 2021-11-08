@@ -8,17 +8,9 @@ Last Modified time: 2021-7-3 17:58:02
 ============Quantumultx===============
 [task_local]
 #赚京豆
-10 0,7,23 * * * jd_syj.js, tag=赚京豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
+10 12,23 * * * jd_syj.js
 
-================Loon==============
-[Script]
-cron "10 0,7,23 * * *" script-path=jd_syj.js, tag=赚京豆
 
-===============Surge=================
-赚京豆 = type=cron,cronexp="10 0,7,23 * * *",wake-system=1,timeout=3600,script-path=jd_syj.js
-
-============小火箭=========
-赚京豆 = type=cron,script-path=jd_syj.js, cronexpr="10 0,7,23 * * *", timeout=3600, enable=true
  */
 const $ = new Env('赚京豆');
 
@@ -42,7 +34,6 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/api';
 !(async () => {
-    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
@@ -92,7 +83,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       }
       if ($.canHelp) {
         $.authorTuanList = [...$.authorTuanList, ...($.body1 || [])];
-        if ($.authorTuanList.length) console.log(`开始账号内部互助 赚京豆-瓜分京豆 活动，如有剩余则给作者和随机团助力`)
+        if (1 == 0) console.log(`开始账号内部互助 赚京豆-瓜分京豆 活动，如有剩余则给作者和随机团助力`)
         for (let j = 0; j < $.authorTuanList.length; ++j) {
           console.log(`账号 ${$.UserName} 开始给作者和随机团 ${$.authorTuanList[j]['assistedPinEncrypted']}助力`)
           await helpFriendTuan($.authorTuanList[j])
