@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 '''
 new Env('检测更新ck');
-cron: 30 */8 * * * ck_check_up.py
+cron: 30 */8 * * * jd_ck_check_up.py
 
 '''
 
