@@ -7,17 +7,17 @@ export HELP_JOYPARK=""
 ============Quantumultx===============
 [task_local]
 #汪汪乐园每日任务
-20 7,9,17,20 * * * jd_joypark_task.js, tag=汪汪乐园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joypark_task.png, enabled=true
+0 0,7,9,17,20 * * * jd_joypark_task.js, tag=汪汪乐园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joypark_task.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "20 7,9,17,20 * * *" script-path=jd_joypark_task.js,tag=汪汪乐园每日任务
+cron "0 0,7,9,17,20 * * *" script-path=jd_joypark_task.js,tag=汪汪乐园每日任务
 
 ===============Surge=================
-汪汪乐园每日任务 = type=cron,cronexp="20 7,9,17,20 * * *",wake-system=1,timeout=3600,script-path=jd_joypark_task.js
+汪汪乐园每日任务 = type=cron,cronexp="0 0,7,9,17,20 * * *",wake-system=1,timeout=3600,script-path=jd_joypark_task.js
 
 ============小火箭=========
-汪汪乐园每日任务 = type=cron,script-path=jd_joypark_task.js, cronexpr="20 7,9,17,20 * * *", timeout=3600, enable=true
+汪汪乐园每日任务 = type=cron,script-path=jd_joypark_task.js, cronexpr="0 0,7,9,17,20 * * *", timeout=3600, enable=true
 */
 const $ = new Env('汪汪乐园每日任务');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -35,12 +35,7 @@ if ($.isNode()) {
 }
 $.invitePinTaskList = []
 $.invitePin = [
-  "NZ42T3lD49qiTGpZsSucXRS8kD-wJ4K6FxwxUpNbb4I",
-  "zZkewfd3OKs-WtoJd8Jw6OIrD81WzO3SX56S2DGMlZ0",
-  "7zG4VHS99AUEoX1mQTkC9Q",
-  "BbsjCRrQudIL06kRvqmVln053h03GiApg7HN_Vhy_Og",
-  "sAxL-dc5T6lS6wtKqP6SlA",
-  "bcVxt4PbZdbX7tiT1Q_ubg"
+  ""
 ]
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
@@ -60,25 +55,24 @@ message = ""
       $.nickName = '';
       $.openIndex = 0
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      if ($.isNode()) {
-        if (process.env.HELP_JOYPARK && process.env.HELP_JOYPARK == "false") {
-        } else {
-          for (let j = 0; j < $.invitePin.length; j++) {
-            let resp = await getJoyBaseInfo(undefined, 2, $.invitePin[j]);
-            if (resp.data && resp.data.helpState && resp.data.helpState === 1) {
-              $.log("帮【zero205】开工位成功，感谢！\n");
-            } else if (resp.data && resp.data.helpState && resp.data.helpState === 3) {
-              $.log("你不是新用户！跳过开工位助力\n");
-              break
-            } else if (resp.data && resp.data.helpState && resp.data.helpState === 2) {
-              $.log(`他的工位已全部开完啦！\n`);
-              $.openIndex++
-            } else {
-              $.log("开工位失败！\n");
-            }
-          }
-        }
-      }
+      // if ($.isNode()) {
+      //   if (process.env.HELP_JOYPARK && process.env.HELP_JOYPARK == "false") {
+      //   } else {
+      //     $.kgw_invitePin = ["7zG4VHS99AUEoX1mQTkC9Q"][Math.floor((Math.random() * 1))];
+      //     let resp = await getJoyBaseInfo(undefined, 2, $.kgw_invitePin);
+      //     if (resp.data && resp.data.helpState && resp.data.helpState === 1) {
+      //       $.log("帮【zero205】开工位成功，感谢！\n");
+      //     } else if (resp.data && resp.data.helpState && resp.data.helpState === 3) {
+      //       $.log("你不是新用户！跳过开工位助力\n");
+      //       break
+      //     } else if (resp.data && resp.data.helpState && resp.data.helpState === 2) {
+      //       $.log(`他的工位已全部开完啦！\n`);
+      //       $.openIndex++
+      //     } else {
+      //       $.log("开工位失败！\n");
+      //     }
+      //   }
+      // }
       await getJoyBaseInfo()
       if ($.joyBaseInfo && $.joyBaseInfo.invitePin) {
         $.log(`${$.name} - ${$.UserName}  助力码: ${$.joyBaseInfo.invitePin}`);
@@ -104,22 +98,19 @@ message = ""
       // 签到 / 逛会场 / 浏览商品
       for (const task of $.taskList) {
         if (task.taskType === 'SIGN') {
-          $.log(`${task.taskTitle} 签到`)
+          $.log(`${task.taskTitle}`)
           await apDoTask(task.id, task.taskType, undefined);
-
-          $.log(`${task.taskTitle} 领取签到奖励`)
+          $.log(`${task.taskTitle} 领取奖励`)
           await apTaskDrawAward(task.id, task.taskType);
-
         }
-        if (task.taskType === 'BROWSE_PRODUCT' || task.taskType === 'BROWSE_CHANNEL') {
+        if (task.taskType === 'BROWSE_PRODUCT' || task.taskType === 'BROWSE_CHANNEL' && task.taskLimitTimes !== 1) {
           let productList = await apTaskDetail(task.id, task.taskType);
-
           let productListNow = 0;
           if (productList.length === 0) {
             let resp = await apTaskDrawAward(task.id, task.taskType);
 
             if (!resp.success) {
-              $.log(`${task.taskTitle} 领取完成!`)
+              $.log(`${task.taskTitle}|${task.taskShowTitle} 领取完成!`)
               productList = await apTaskDetail(task.id, task.taskType);
 
             }
@@ -135,7 +126,7 @@ message = ""
             let resp = await apDoTask(task.id, task.taskType, productList[productListNow].itemId, productList[productListNow].appid);
 
             if (resp.code === 2005 || resp.code === 0) {
-              $.log(`${task.taskTitle} 任务完成！`)
+              $.log(`${task.taskTitle}|${task.taskShowTitle} 任务完成！`)
             } else {
               $.log(`${resp.echo} 任务失败！`)
             }
@@ -150,13 +141,14 @@ message = ""
             let resp = await apTaskDrawAward(task.id, task.taskType);
 
             if (!resp.success) {
-              $.log(`${task.taskTitle} 领取完成!`)
+              $.log(`${task.taskTitle}|${task.taskShowTitle} 领取完成!`)
               break
             }
           }
         } else if (task.taskType === 'SHARE_INVITE') {
+          $.yq_taskid = task.id
           for (let j = 0; j < 5; j++) {
-            let resp = await apTaskDrawAward(167, 'SHARE_INVITE');
+            let resp = await apTaskDrawAward($.yq_taskid, 'SHARE_INVITE');
 
             if (!resp.success) {
               break
@@ -164,6 +156,15 @@ message = ""
             $.log("领取助力奖励成功！")
           }
         }
+        if (task.taskType === 'BROWSE_CHANNEL' && task.taskLimitTimes === 1) {
+          $.log(`${task.taskTitle}|${task.taskShowTitle}`)
+          await apDoTask2(task.id, task.taskType, task.taskSourceUrl);
+          $.log(`${task.taskTitle}|${task.taskShowTitle} 领取奖励`)
+          await apTaskDrawAward(task.id, task.taskType);
+        }
+        // if (task.taskType === 'SHARE_INVITE') {
+        //   $.yq_taskid = task.id
+        // }
       }
     }
   }
@@ -189,7 +190,7 @@ message = ""
       $.newinvitePinTaskList = [...($.invitePinTaskList || []), ...($.invitePin || [])]
       for (const invitePinTaskListKey of $.newinvitePinTaskList) {
         $.log(`【京东账号${$.index}】${$.nickName || $.UserName} 助力 ${invitePinTaskListKey}`)
-        let resp = await getJoyBaseInfo(167, 1, invitePinTaskListKey);
+        let resp = await getJoyBaseInfo($.yq_taskid, 1, invitePinTaskListKey);
         if (resp.success) {
           if (resp.data.helpState === 1) {
             $.log("助力成功！");
@@ -292,10 +293,29 @@ function apDoTask(taskId, taskType, itemId = '', appid = 'activities_platform') 
   })
 }
 
+function apDoTask2(taskId, taskType, itemId, appid = 'activities_platform') {
+  return new Promise(resolve => {
+    $.post(taskPostClientActionUrl(`body={"taskType":"${taskType}","taskId":${taskId},"linkId":"LsQNxL7iWDlXUs6cFl-AAg","itemId":"${itemId}"}&appid=${appid}`, `apDoTask`), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
 function apTaskDetail(taskId, taskType) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.post(taskPostClientActionUrl(`functionId=apTaskDetail&body={"taskType":"${taskType}","taskId":${taskId},"itemId":"https://pro.m.jd.com/jdlite/active/oTtXBgN2Toq1KfdLXUKKivNKVgA/index.html","linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `apTaskDetail`), async (err, resp, data) => {
+    $.post(taskPostClientActionUrl(`functionId=apTaskDetail&body={"taskType":"${taskType}","taskId":${taskId},"channel":4,"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `apTaskDetail`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
