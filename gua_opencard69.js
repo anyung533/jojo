@@ -37,13 +37,13 @@ cron:47 2 18-23 11 *
 ============Quantumultx===============
 [task_local]
 #11.18~11.23 联合开卡
-47 2 18-23 11 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard69.js, tag=11.18~11.23 联合开卡, enabled=true
+31 11 18-23 11 * gua_opencard69.js, tag=11.18~11.23 联合开卡, enabled=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
-let guaopencard_draw = "0"
+let guaopencard_draw = "3"
 let rewardBean = ''; // 京豆奖励判断 | 1=邀请 2=开卡 3=关注  | 填1,2,3
 
 const $ = new Env('11.18~11.23 联合开卡-69');
