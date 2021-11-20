@@ -1,24 +1,20 @@
 /*
-*
-京东金融养猪猪
-活动入口：京东金融养猪猪，
-脚本更新地址：https://github.com/zero205/JD_tencent_scf
-加了个邀新助力，不过应该没啥用。邀请码变量：PIGPETSHARECODES，变量仅支持单账号邀请码
+Last Modified time: 2021-5-19 12:27:16
+活动入口：京东金融养猪猪
+一键开完所有的宝箱功能。耗时70秒
+大转盘抽奖
+喂食
+每日签到
+完成分享任务得猪粮
 已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
+脚本兼容: QuantumultX, Surge, Loon, 小火箭，JSBox, Node.js
+===============Quantumultx===============
 [task_local]
-京东金融养猪猪
-12 0-23/6 * * * https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js, tag=京东金融养猪猪, enabled=true
-================Loon==============
-[Script]
-cron "12 0-23/6 * * *" script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js,tag=摇钱树助力
-===============Surge=================
-京东金融养猪猪 = type=cron,cronexp="12 0-23/6 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js
-============小火箭=========
-京东金融养猪猪 = type=cron,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js, cronexpr="12 0-23/6 * * *", timeout=3600, enable=true
-*
-*/
+#京东金融养猪猪
+12 0-23/6 * * * jd_pigPet.js, tag=京东金融养猪猪, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdyz.png, enabled=true
+
+ */
+
 const $ = new Env('金融养猪');
 const url = require('url');
 let cookiesArr = [], cookie = '', allMessage = '';
@@ -27,7 +23,9 @@ const MISSION_BASE_API = `https://ms.jr.jd.com/gw/generic/mission/h5/m`;
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let shareId = ["t_7LVGP8mopofh8AG0Q7E8AdoUJQ3Dik", "0IzWPVQGlmepafqlqgOSXw", "zExA7lNc3HrJrbVuG3xRVMAdoUJQ3Dik"][Math.floor((Math.random() * 3))];
+let shareId = ["fuck", "JDJB", "SB"][Math.floor((Math.random() * 3))];
+let helpId = ["a276052f-475c-4bbc-ad19-7164c6e65dc5", "6ba62dbd-9c41-4c85-a1b7-a7dcb991bb2e", "5f7b41ab-985e-419d-b085-5487ffe2f5ee"];
+$.shareCodes = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -38,11 +36,12 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
   }
-  console.log(`\n【原作者：LXK大佬】\n\nBy：zero205\n添加：邀请新用户\n修改：优化日志输出，自动喂食\n`);
+  console.log(`\n添加：邀请新用户，大转盘助力，抢粮食\n修改：优化日志输出，自动喂食\n\n默认不抢粮食（成功机率小），需要的请添加变量JD_PIGPET_PK，值填true\n`);
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -50,6 +49,7 @@ if ($.isNode()) {
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
+      $.finish = false;
       await TotalBean();
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       if (!$.isLogin) {
@@ -62,7 +62,20 @@ if ($.isNode()) {
       await jdPigPet();
     }
   }
-  if (allMessage && new Date().getHours() % 6 === 0) {
+  console.log(`\n======开始大转盘助力======\n`);
+  $.shareCodes = [...$.shareCodes, ...($.helpId || [])]
+  for (let j = 0; j < cookiesArr.length; j++) {
+    cookie = cookiesArr[j];
+    if ($.shareCodes && $.shareCodes.length) {
+      console.log(`\n自己账号内部循环互助，有剩余次数再帮作者助力\n`);
+      for (let item of $.shareCodes) {
+        await pigPetLotteryHelpFriend(item)
+        await $.wait(1000)
+        // if (!$.canRun) break
+      }
+    }
+  }
+  if (process.env.PIGNF != 'false' && allMessage && new Date().getHours() % 6 === 0) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage);
   }
@@ -82,8 +95,12 @@ async function jdPigPet() {
     await pigPetOpenBox();
     await pigPetLotteryIndex();
     await pigPetLottery();
+    if (process.env.JD_PIGPET_PK && process.env.JD_PIGPET_PK === 'true') {
+    await pigPetRank();
+    }
     await pigPetMissionList();
     await missions();
+    if ($.finish) return
     await pigPetUserBag();
   } catch (e) {
     $.logErr(e)
@@ -93,6 +110,7 @@ async function pigPetLottery() {
   if ($.currentCount > 0) {
     for (let i = 0; i < $.currentCount; i++) {
       await pigPetLotteryPlay();
+      await $.wait(6000)
     }
   }
 }
@@ -167,8 +185,8 @@ function pigPetUserBag() {
                       let i = 50
                       console.log(`\n每次运行最多喂食50次`)
                       do {
-                        console.log(`\n10秒后开始喂食${item.goodsName}，当前数量为${item.count}g`)
-                        await $.wait(10000);
+                        console.log(`\n15秒后开始喂食${item.goodsName}，当前数量为${item.count}g`)
+                        await $.wait(15000);
                         await pigPetAddFood(item.sku);
                         if ($.finish) break
                         item.count = item.count - 20
@@ -254,12 +272,14 @@ function pigPetLogin() {
               if (data.resultData.resultCode === 0) {
                 $.hasPig = data.resultData.resultData.hasPig;
                 if (!$.hasPig) {
-                  console.log(`\n京东账号${$.index} ${$.nickName} 未开启养猪活动,请手动去京东金融APP开启此活动或复制口令直达：\n29.0复制整段话 Https:/JWHOjEv6wgo0BQ 我的5斤百香果能领取啦，来养猪，一起赚#0E4EfAMIKuyDlW%打kai>【ぺ京倲金融ぺ App】～\n`)
+                  console.log(`\n京东账号${$.index} ${$.nickName} 未开启养猪活动,请手动去京东金融APP开启此活动`)
                   return
                 }
                 if (data.resultData.resultData.wished) {
                   if (data.resultData.resultData.wishAward) {
                     allMessage += `京东账号${$.index} ${$.nickName || $.UserName}\n${data.resultData.resultData.wishAward.name}已可兑换${$.index !== cookiesArr.length ? '\n\n' : ''}`
+                    console.log(`【京东账号${$.index}】${$.nickName || $.UserName} ${data.resultData.resultData.wishAward.name}已可兑换，请及时去京东金融APP领取`)
+                    $.finish = true
                   }
                 }
                 console.log(`\n【京东账号${$.index}】${$.nickName || $.UserName} 的邀请码为${data.resultData.resultData.user.shareId}\n`)
@@ -295,17 +315,17 @@ function pigPetOpenBox() {
             if (data.resultCode === 0) {
               if (data.resultData.resultCode === 0) {
                 if (data.resultData.resultData && data.resultData.resultData.award) {
-                  console.log(`开宝箱获得${data.resultData.resultData.award.content}，数量：${data.resultData.resultData.award.count}`);
+                  console.log(`开宝箱获得${data.resultData.resultData.award.content}，数量：${data.resultData.resultData.award.count}\n`);
 
                 } else {
-                  console.log(`开宝箱暂无奖励`)
+                  console.log(`开宝箱暂无奖励\n`)
                 }
                 await $.wait(2000);
                 await pigPetOpenBox();
               } else if (data.resultData.resultCode === 420) {
-                console.log(`开宝箱失败:${data.resultData.resultMsg}`)
+                console.log(`开宝箱失败:${data.resultData.resultMsg}\n`)
               } else {
-                console.log(`开宝箱其他情况：${JSON.stringify(data)}`)
+                console.log(`开宝箱其他情况：${JSON.stringify(data)}\n`)
               }
             }
           } else {
@@ -341,11 +361,136 @@ function pigPetLotteryIndex() {
             if (data.resultCode === 0) {
               if (data.resultData.resultCode === 0) {
                 if (data.resultData.resultData) {
-                  console.log(`当前大转盘剩余免费抽奖次数：：${data.resultData.resultData.currentCount}`);
+                  console.log(`当前大转盘剩余免费抽奖次数：${data.resultData.resultData.currentCount}\n`);
+                  console.log(`您的大转盘助力码为：${data.resultData.resultData.helpId}\n`);
+                  $.shareCodes.push(data.resultData.resultData.helpId)
                   $.currentCount = data.resultData.resultData.currentCount;
                 }
               } else {
                 console.log(`查询大转盘的次数：${JSON.stringify(data)}`)
+              }
+            }
+          } else {
+            console.log(`京东服务器返回空数据`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+//查询排行榜好友
+function pigPetRank() {
+  return new Promise(async resolve => {
+    const body = {
+      "type": 1,
+      "page": 1,
+      "source": 2,
+      "channelLV": "juheye",
+      "riskDeviceParam": "{}"
+    }
+    $.post(taskUrl('pigPetRank', body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} pigPetRank API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            n = 0
+            if (data.resultCode === 0) {
+              if (data.resultData.resultCode === 0 && n < 5) {
+                $.friends = data.resultData.resultData.friends
+                for (let i = 0; i < $.friends.length; i++) {
+                  if ($.friends[i].status === 1) {
+                    $.friendId = $.friends[i].uid
+                    console.log(`去抢夺【${$.friends[i].nickName}】的食物`)
+                    await $.wait(2000)
+                    await pigPetFriendIndex($.friendId)
+                  }
+                }
+              } else {
+                console.log(`查询排行榜失败：${JSON.stringify(data)}`)
+              }
+            }
+          } else {
+            console.log(`京东服务器返回空数据`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function pigPetFriendIndex(friendId) {
+  return new Promise(async resolve => {
+    const body = {
+      "friendId": friendId,
+      "source": 2,
+      "channelLV": "juheye",
+      "riskDeviceParam": "{}"
+    }
+    $.post(taskUrl('pigPetFriendIndex', body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} pigPetFriendIndex API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.resultCode === 0) {
+              if (data.resultData.resultCode === 0) {
+                await pigPetRobFood($.friendId)
+                await $.wait(3000)
+              } else {
+                console.log(`进入好友猪窝失败：${JSON.stringify(data)}`)
+              }
+            }
+          } else {
+            console.log(`京东服务器返回空数据`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+//抢夺食物
+async function pigPetRobFood(friendId) {
+  return new Promise(async resolve => {
+    const body = {
+      "source": 2,
+      "friendId": friendId,
+      "channelLV": "juheye",
+      "riskDeviceParam": "{}"
+    }
+    $.post(taskUrl('pigPetRobFood', body), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.resultCode === 0) {
+              if (data.resultData.resultCode === 0) {
+                if (data.resultData.resultData.robFoodCount > 0) {
+                  console.log(`抢夺成功，获得${data.resultData.resultData.robFoodCount}g${data.resultData.resultData.robFoodName}\n`);
+                  n++
+                } else {
+                  console.log(`抢夺失败，损失${data.resultData.resultData.robFoodCount}g${data.resultData.resultData.robFoodName}\n`);
+                }
+              } else {
+                console.log(`抢夺失败：${JSON.stringify(data)}\n`)
               }
             }
           } else {
@@ -407,8 +552,8 @@ function pigPetLotteryPlay() {
       "source": 2,
       "channelLV": "juheye",
       "riskDeviceParam": "{}",
-      "t": Date.now(),
-      "type": 0,
+      "validation": "",
+      "type": 0
     }
     $.post(taskUrl('pigPetLotteryPlay', body), (err, resp, data) => {
       try {
@@ -417,17 +562,62 @@ function pigPetLotteryPlay() {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            // console.log(data)
             data = JSON.parse(data);
             if (data.resultCode === 0) {
               if (data.resultData.resultCode === 0) {
                 if (data.resultData.resultData) {
-                  // console.log(`当前大转盘剩余免费抽奖次数：：${data.resultData.resultData.currentCount}`);
+                  if (data.resultData.resultData.award) {
+                    console.log(`大转盘抽奖获得：${data.resultData.resultData.award.name} * ${data.resultData.resultData.award.count}\n`);
+                  } else {
+                    console.log(`大转盘抽奖结果：没抽中，再接再励哦～\n`)
+                  }
                   $.currentCount = data.resultData.resultData.currentCount;//抽奖后剩余的抽奖次数
                 }
               } else {
                 console.log(`其他情况：${JSON.stringify(data)}`)
               }
+            }
+          } else {
+            console.log(`京东服务器返回空数据`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+
+function pigPetLotteryHelpFriend(helpId) {
+  return new Promise(async resolve => {
+    const body = {
+      "source": 2,
+      "helpId": helpId,
+      "channelLV": "juheye",
+      "riskDeviceParam": "{}"
+    }
+    $.post(taskUrl('pigPetLotteryHelpFriend', body), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.resultCode === 0) {
+              if (data.resultData.resultCode === 0) {
+                if (data.resultData.resultData.opResult == 0) {
+                  console.log(`大转盘助力结果：助力成功\n`);
+                } else if (data.resultData.resultData.opResult == 461) {
+                  console.log(`大转盘助力结果：助力失败，已经助力过了\n`);
+                } else {
+                  console.log(`大转盘助力结果：助力失败`);
+                }
+              }
+            } else {
+              console.log(`${JSON.stringify(data)}\n`)
             }
           } else {
             console.log(`京东服务器返回空数据`)
