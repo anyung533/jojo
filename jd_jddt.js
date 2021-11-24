@@ -187,7 +187,7 @@ async function operation() {
         };
         await redeemHomePage(`id=${$.id}&activeid=A_8943039_R_6_D_20211015&activeId=A_8943039_R_6_D_20211015&authcode=${$.authcode}&token=${$.taskToken}`);
         let condition = [2000, 4900, 62700, 149400]
-        for (let k = $.exchangeList.length-1; k >= 0; k--){
+        for (let k = $.exchangeList.length; k >= 0; k--){
             if ($.coin >= condition[k] && $.exchangeList[k].left === 1){
                 consumeid = $.exchangeList[k].res.sID;
                 console.log(`兑换${$.exchangeList[k].name}`)
