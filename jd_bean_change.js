@@ -1,5 +1,5 @@
 /*
-cron "0 0-23/3 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
+cron "10 12,22 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
  */
 
 //详细说明参考 https://github.com/ccwav/QLScript2.
@@ -59,6 +59,7 @@ let llShowMonth = false;
 let Today = new Date();
 let strAllNotify="";
 let llPetError=false;
+let strGuoqi="";
 let RemainMessage = '\n';
 RemainMessage += "⭕提醒:⭕" + '\n';
 RemainMessage += '【极速金币】京东极速版->我的->金币(极速版使用)\n';
@@ -69,7 +70,7 @@ RemainMessage += '【领现金】京东->我的->东东萌宠->领现金(微信�
 RemainMessage += '【东东农场】京东->我的->东东农场,完成是京东红包,可以用于京东app的任意商品\n';
 RemainMessage += '【京喜工厂】京喜->我的->京喜工厂,完成是商品红包,用于购买指定商品(不兑换会过期)\n';
 RemainMessage += '【其他】京喜红包只能在京喜使用,其他同理';
-let BEANCHANGE_PERSENT="130"
+let BEANCHANGE_PERSENT="10"
 
 let WP_APP_TOKEN_ONE = "";
 let TempBaipiao = "";
@@ -135,7 +136,7 @@ if ($.isNode()) {
 	cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 !(async() => {
-    console.log(`\n❗❗❗❗❗❗\n啊！注意京东过期时间\n❗❗❗❗❗❗\n`);
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
 	if (!cookiesArr[0]) {
 		$.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {
 			"open-url": "https://bean.m.jd.com/bean/signIndex.action"
@@ -179,11 +180,11 @@ if ($.isNode()) {
 			$.jdCash = 0;
 			$.isPlusVip = 0;
 			$.JingXiang = "";
-
 			$.allincomeBean = 0; //月收入
 			$.allexpenseBean = 0; //月支出
 			$.joylevel = 0;
 			TempBaipiao = "";
+			strGuoqi="";
 			console.log(`******开始查询【京东账号${$.index}】${$.nickName || $.UserName}*********`);
 
 			await TotalBean();
@@ -518,7 +519,8 @@ async function showMsg() {
 	if ($.expenseBean != 0) {
 		ReturnMessage += `,支${$.expenseBean}豆`;
 	}
-	ReturnMessage += `\n`;
+	ReturnMessage += `\n`;	
+	
 	if ($.levelName || $.JingXiang){
 		ReturnMessage += `【当前京豆】${$.beanCount}豆(≈${($.beanCount / 100).toFixed(2)}元)\n`;
 	} else {
@@ -719,9 +721,14 @@ async function showMsg() {
 			}
 		}
 	}
+	if(strGuoqi){		
+		ReturnMessage += `💸💸💸临期京豆明细💸💸💸\n`;
+		ReturnMessage += `${strGuoqi}`;
+	}
 	ReturnMessage += `🧧🧧🧧红包明细🧧🧧🧧\n`;
 	ReturnMessage += `${$.message}`;
-
+	
+	
 	if (userIndex2 != -1) {
 		allMessageGp2 += ReturnMessageTitle+ReturnMessage + `\n`;
 	}
@@ -816,11 +823,8 @@ async function bean() {
 	}
 	$.todayOutcomeBean = -$.todayOutcomeBean;
 	$.expenseBean = -$.expenseBean;
-	//await queryexpirejingdou();//过期京豆
-	//$.todayOutcomeBean=$.todayOutcomeBean+$.expirejingdou;
-	await redPacket(); //过期红包
-	// console.log(`昨日收入：${$.incomeBean}个京豆 🐶`);
-	// console.log(`昨日支出：${$.expenseBean}个京豆 🐶`)
+	await queryexpirejingdou();//过期京豆
+	await redPacket(); 
 }
 
 async function Monthbean() {
@@ -1172,7 +1176,6 @@ function queryexpirejingdou() {
 				"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1"
 			}
 		}
-		$.expirejingdou = 0;
 		$.get(options, (err, resp, data) => {
 			try {
 				if (err) {
@@ -1182,15 +1185,12 @@ function queryexpirejingdou() {
 					if (data) {
 						// console.log(data)
 						data = JSON.parse(data.slice(23, -13));
-						// console.log(data)
 						if (data.ret === 0) {
 							data['expirejingdou'].map(item => {
-								//console.log(`${timeFormat(item['time'] * 1000)}日过期京豆：${item['expireamount']}\n`);
+								if(item['expireamount']!=0){																	
+									strGuoqi+=`【${timeFormat(item['time'] * 1000)}】过期${item['expireamount']}豆\n`;
+								}
 							})
-							$.expirejingdou = data['expirejingdou'][0]['expireamount'];
-							// if ($.expirejingdou > 0) {
-							//   $.message += `\n今日将过期：${$.expirejingdou}京豆 🐶`;
-							// }
 						}
 					} else {
 						console.log(`京东服务器返回空数据`)

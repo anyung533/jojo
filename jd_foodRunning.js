@@ -8,6 +8,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
 $.helpCodes = [];
 $.useInfo = {};
+let ADD_CAR = true
 //是否加购物车
 //const addCarFlag =  $.isNode() ? (process.env.ADD_CAR ? process.env.ADD_CAR : true):true;
 let cookiesArr = [];
