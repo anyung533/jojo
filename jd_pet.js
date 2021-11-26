@@ -8,8 +8,6 @@
 互助码shareCode请先手动运行脚本查看打印可看到
 一天只能帮助5个人。多出的助力码无效
 
-// zero205：已添加自己账号内部互助，有剩余助力次数再帮我助力
-
 =================================Quantumultx=========================
 [task_local]
 #东东萌宠
@@ -27,26 +25,20 @@ cron "15 6-18/6 * * *" script-path=jd_pet.js,tag=东东萌宠
 
 */
 const $ = new Env('东东萌宠');
-let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, newShareCodes=[], allMessage = '';
+let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, newShareCodes, allMessage = '';
 //助力好友分享码(最多5个,否则后面的助力失败),原因:京东农场每人每天只有四次助力机会
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
-let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
-   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  '',
-  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  '',
+let shareCodes = [
+  'fuck@aaron',
 ]
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let randomCount = $.isNode() ? 20 : 5;
-$.newShareCode = [];
 !(async () => {
-  if (!process.env.JD_JOIN_ZLC || process.env.JD_JOIN_ZLC !== 'false') {
-    console.log(`【注意】本脚本默认会给助力池进行助力！\n如需加入助力池请添加TG群：https://t.me/jd_zero_205\n如不加入助力池互助，可添加变量名称：JD_JOIN_ZLC，变量值：false\n`)
-  }
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   await requireConfig();
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -74,17 +66,8 @@ $.newShareCode = [];
       goodsUrl = '';
       taskInfoKey = [];
       option = {};
-      $.retry = 0;
-      await jdPet();
-    }
-  }
-  for (let j = 0; j < cookiesArr.length; j++) {
-    if (cookiesArr[j]) {
-      cookie = cookiesArr[j];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = j + 1;
       await shareCodesFormat();
-      await slaveHelp();
+      await jdPet();
     }
   }
   if ($.isNode() && allMessage && $.ctrTemp) {
@@ -101,17 +84,18 @@ async function jdPet() {
   try {
     //查询jd宠物信息
     const initPetTownRes = await request('initPetTown');
-    message = `【京东账号${$.index}】${$.nickName}\n`;
+    message = `【京东账号${$.index}】${$.nickName || $.UserName}\n`;
     if (initPetTownRes.code === '0' && initPetTownRes.resultCode === '0' && initPetTownRes.message === 'success') {
       $.petInfo = initPetTownRes.result;
       if ($.petInfo.userStatus === 0) {
-        // $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`, { "open-url": "openapp.jdmoble://" });
-        $.log($.name, '', `【提示】京东账号${$.index}${$.nickName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`);
+        // $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName || $.UserName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`, { "open-url": "openapp.jdmoble://" });
+        await slaveHelp();//助力好友
+        $.log($.name, '', `【提示】京东账号${$.index}${$.nickName || $.UserName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`);
         return
       }
       if (!$.petInfo.goodsInfo) {
-        $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName}\n暂未选购新的商品`, { "open-url": "openapp.jdmoble://" });
-        if ($.isNode()) await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName}`, `【提示】京东账号${$.index}${$.nickName}\n暂未选购新的商品`);
+        $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName || $.UserName}\n暂未选购新的商品`, { "open-url": "openapp.jdmoble://" });
+        if ($.isNode()) await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName || $.UserName}`, `【提示】京东账号${$.index}${$.nickName || $.UserName}\n暂未选购新的商品`);
         return
       }
       goodsUrl = $.petInfo.goodsInfo && $.petInfo.goodsInfo.goodsUrl;
@@ -122,7 +106,7 @@ async function jdPet() {
         option['open-url'] = "openApp.jdMobile://";
         $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】${$.petInfo.goodsInfo.goodsName}已可领取\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
+          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
         }
         return
       } else if ($.petInfo.petStatus === 6) {
@@ -130,28 +114,11 @@ async function jdPet() {
         option['open-url'] = "openApp.jdMobile://";
         $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】已领取红包,但未继续领养新的物品\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n已领取红包,但未继续领养新的物品`);
+          await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n已领取红包,但未继续领养新的物品`);
         }
         return
       }
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.petInfo.shareCode}\n`);
-      jdPetShareArr.push($.petInfo.shareCode)
-
-      // ***************************
-      // 报告运行次数
-      $.get({
-        url: `https://api.jdsharecode.fxyz/api/runTimes?activityId=pet&sharecode=${$.petInfo.shareCode}`
-      }, (err, resp, data) => {
-        if (err) {
-          console.log('上报失败', err)
-        } else {
-          if (data === '1' || data === '0') {
-            console.log('上报成功')
-          }
-        }
-      })
-      // ***************************
-
       await taskInit();
       if ($.taskInit.resultCode === '9999' || !$.taskInit.result) {
         console.log('初始化任务异常, 请稍后再试');
@@ -160,6 +127,7 @@ async function jdPet() {
       $.taskInfo = $.taskInit.result;
 
       await petSport();//遛弯
+      await slaveHelp();//助力好友
       await masterHelpInit();//获取助力的信息
       await doTask();//做日常任务
       await feedPetsAgain();//再次投食
@@ -168,18 +136,12 @@ async function jdPet() {
       console.log('全部任务完成, 如果帮助到您可以点下🌟STAR鼓励我一下, 明天见~');
     } else if (initPetTownRes.code === '0'){
       console.log(`初始化萌宠失败:  ${initPetTownRes.message}`);
-      if ($.retry < 2) {
-        $.retry++
-        console.log(`等待10秒后重试,第${$.retry}次`);
-        await $.wait(10000);
-        await jdPet();
-      }
     }
   } catch (e) {
     $.logErr(e)
-    // const errMsg = `京东账号${$.index} ${$.nickName || $.UserName}\n任务执行异常，请检查执行日志 ‼️‼️`;
-    // if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
-    // $.msg($.name, '', `${errMsg}`)
+    const errMsg = `京东账号${$.index} ${$.nickName || $.UserName}\n任务执行异常，请检查执行日志 ‼️‼️`;
+    if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
+    $.msg($.name, '', `${errMsg}`)
   }
 }
 // 收取所有好感度
@@ -315,14 +277,8 @@ async function slaveHelp() {
   //$.log(`\n因1.6日好友助力功能下线。故暂时屏蔽\n`)
   //return
   let helpPeoples = '';
-  if ($.isNode() && !process.env.PETSHARECODES) {
-    console.log(`您未填写助力码变量，开始账号内互助，再帮【zero205】助力`);
-    $.newShareCode = [...(jdPetShareArr || []), ...(newShareCodes || [])]
-  } else {
-    $.newShareCode = newShareCodes
-  }
-  for (let code of $.newShareCode) {
-    console.log(`${$.UserName}开始助力: ${code}`);
+  for (let code of newShareCodes) {
+    console.log(`开始助力京东账号${$.index} - ${$.nickName || $.UserName}的好友: ${code}`);
     if (!code) continue;
     let response = await request(arguments.callee.name.toString(), {'shareCode': code});
     if (response.code === '0' && response.resultCode === '0') {
@@ -483,10 +439,10 @@ async function showMsg() {
   }
   // jdNotify = `${notify.petNotifyControl}` === 'false' && `${jdNotify}` === 'false' && $.getdata('jdPetNotify') === 'false';
   if ($.ctrTemp) {
-    // $.msg($.name, subTitle, message, option);
+    $.msg($.name, subTitle, message, option);
     if ($.isNode()) {
       allMessage += `${subTitle}\n${message}${$.index !== cookiesArr.length ? '\n\n' : ''}`
-      // await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `${subTitle}\n${message}`);
+      // await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}`, `${subTitle}\n${message}`);
     }
   } else {
     $.log(`\n${message}\n`);
@@ -494,14 +450,14 @@ async function showMsg() {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://api.jdsharecode.xyz/api/pet/${randomCount}`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: ``, timeout: 1}, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
+          console.log(JSON.stringify(err))
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -515,48 +471,22 @@ function readShareCode() {
     resolve()
   })
 }
-//提交互助码
-// function submitCode() {
-//   return new Promise(async resolve => {
-//   $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${$.petInfo.shareCode}&type=pet`, timeout: 10000}, (err, resp, data) => {
-//     try {
-//       if (err) {
-//         console.log(`${JSON.stringify(err)}`)
-//         console.log(`${$.name} API请求失败，请检查网路重试`)
-//       } else {
-//         if (data) {
-//           //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
-//           data = JSON.parse(data);
-//         }
-//       }
-//     } catch (e) {
-//       $.logErr(e, resp)
-//     } finally {
-//       resolve(data);
-//     }
-//   })
-//   await $.wait(15000);
-//   resolve()
-//   })
-// }
 function shareCodesFormat() {
   return new Promise(async resolve => {
-    console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
+    // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
+    newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
       newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     } else {
-      // console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
+      console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
     //因好友助力功能下线。故暂时屏蔽
-    if (process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false') {
-      console.log(`您设置了不加入助力池，跳过\n`)
-    } else {
-      const readShareCodeRes = await readShareCode();
-      if (readShareCodeRes && readShareCodeRes.code === 200) {
-        newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
-      }
+    const readShareCodeRes = await readShareCode();
+    //const readShareCodeRes = null;
+    if (readShareCodeRes && readShareCodeRes.code === 200) {
+      newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
     }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify(newShareCodes)}`)
     resolve();
@@ -589,8 +519,8 @@ function requireConfig() {
         }
       })
     } else {
-      if ($.getdata('PETSHARECODES')) $.shareCodesArr = $.getdata('PETSHARECODES').split('\n').filter(item => !!item);
-      console.log(`\nBoxJs设置的${$.name}好友邀请码:${$.getdata('PETSHARECODES') ? $.getdata('PETSHARECODES') : '暂无'}\n`);
+      if ($.getdata('jd_pet_inviter')) $.shareCodesArr = $.getdata('jd_pet_inviter').split('\n').filter(item => !!item);
+      console.log(`\nBoxJs设置的${$.name}好友邀请码:${$.getdata('jd_pet_inviter') ? $.getdata('jd_pet_inviter') : '暂无'}\n`);
     }
     // console.log(`$.shareCodesArr::${JSON.stringify($.shareCodesArr)}`)
     // console.log(`jdPetShareArr账号长度::${$.shareCodesArr.length}`)
@@ -625,17 +555,15 @@ function TotalBean() {
               $.isLogin = false; //cookie过期
               return
             }
-            if (data['retcode'] === 0) {
-              $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
-            } else {
-              $.nickName = $.UserName
+            if (data['retcode'] === 0 && data.base && data.base.nickname) {
+              $.nickName = data.base.nickname;
             }
           } else {
             console.log(`京东服务器返回空数据`)
           }
         }
       } catch (e) {
-        $.logErr(e, resp)
+        $.logErr(e)
       } finally {
         resolve();
       }

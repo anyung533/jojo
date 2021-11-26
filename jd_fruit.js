@@ -1,7 +1,7 @@
 /*
 [task_local]
 #jd免费水果
-5 8,12,18 * * * jd_fruit.js, tag=东东农场
+5 6-18/6 * * * jd_fruit.js, tag=东东农场
 
 */
 const $ = new Env('东东农场');

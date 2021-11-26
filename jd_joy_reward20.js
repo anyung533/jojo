@@ -2,7 +2,7 @@
 ==============Quantumult X==============
 [task_local]
 #宠汪汪积分兑换奖品
-59 23 * * * jd_joy_reward20.js, tag=宠汪汪兑换20京豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
+59 15 * * * jd_joy_reward20.js, tag=宠汪汪兑换20京豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
 
 
  */

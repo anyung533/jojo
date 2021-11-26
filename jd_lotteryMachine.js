@@ -3,6 +3,10 @@
 author：yangtingxiao
 github： https://github.com/yangtingxiao
 活动入口：京东APP中各种抽奖活动的汇总
+============Quantumultx===============
+[task_local]
+#京东抽奖机
+5 * * * * jd_lotteryMachine.js, tag=京东抽奖机
 
 修改自用 By xxx
 更新时间：2021-05-25 8:50
@@ -25,6 +29,7 @@ const collectScoreFunPrefixArr = ['','','','','','','','','','','','','interact_
 $.allShareId = {};
 main();
 async function main() {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   await help();//先账号内部互助
   await updateShareCodes();
   if (!$.body) await updateShareCodesCDN();

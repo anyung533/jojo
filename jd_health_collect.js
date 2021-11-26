@@ -1,25 +1,10 @@
 // author: 疯疯
 /*
-东东健康社区收集能量收集能量(不做任务，任务脚本请使用jd_health.js)
-更新时间：2021-4-23
-活动入口：京东APP首页搜索 "玩一玩"即可
-
-已支持IOS多京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-===================quantumultx================
+===============quantumultx=============
 [task_local]
 #东东健康社区收集能量
-5 0-23/2 * * * jd_health_collect.js, tag=东东健康社区收集能量, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+5 * * * * jd_health_collect.js
 
-=====================Loon================
-[Script]
-cron "5 0-23/2 * * *" script-path=jd_health_collect.js, tag=东东健康社区收集能量
-
-====================Surge================
-东东健康社区收集能量 = type=cron,cronexp="5 0-23/2 * * *",wake-system=1,timeout=3600,script-path=jd_health_collect.js
-
-============小火箭=========
-东东健康社区收集能量 = type=cron,script-path=jd_health_collect.js, cronexpr="5 0-23/2 * * *", timeout=3600, enable=true
  */
 const $ = new Env("东东健康社区收集能量收集");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
@@ -41,6 +26,7 @@ if ($.isNode()) {
 }
 const JD_API_HOST = "https://api.m.jd.com/client.action";
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
 	if (!cookiesArr[0]) {
 		$.msg(
 			$.name,

@@ -1,24 +1,10 @@
 /*
-京东赚赚
-可以做随机互助
-活动入口：京东赚赚小程序
-长期活动，每日收益2毛左右，多号互助会较多
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+
 ============Quantumultx===============
 [task_local]
 # 京东赚赚
-10 0 * * * jd_jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true
+50 0,4,16 * * * jd_jdzz.js
 
-================Loon==============
-[Script]
-cron "10 0 * * *" script-path=jd_jdzz.js,tag=京东赚赚
-
-===============Surge=================
-京东赚赚 = type=cron,cronexp="10 0 * * *",wake-system=1,timeout=3600,script-path=jd_jdzz.js
-
-============小火箭=========
-京东赚赚 = type=cron,script-path=jd_jdzz.js, cronexpr="10 0 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东赚赚');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -26,7 +12,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let helpAuthor=false; // 帮助作者
 const randomCount = $.isNode() ? 20 : 5;
-let jdNotify = false; // 是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = true; // 是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 if ($.isNode()) {
@@ -40,11 +26,11 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [
-  ``,
-  ``,
+  `fuck@aaron`,
 ]
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000);
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   await requireConfig();
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -228,7 +214,7 @@ async function helpFriends() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://code.chiang.fun/api/v1/jd/jdzz/read/${randomCount}/`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: ``, 'timeout': 10}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

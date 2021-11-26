@@ -1,33 +1,17 @@
 /*
-领券中心签到
 
-@感谢 ddo 提供sign算法
-@感谢 匿名大佬 提供pin算法
-
-活动入口：领券中心
-更新时间：2021-08-23
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #领券中心签到
-15 0 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js, tag=领券中心签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+15 0,5 * * * jd_ccSign.js
 
-================Loon==============
-[Script]
-cron "15 0 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js,tag=领券中心签到
 
-===============Surge=================
-领券中心签到 = type=cron,cronexp="15 0 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js
-
-============小火箭=========
-领券中心签到 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js, cronexpr="15 0 * * *", timeout=3600, enable=true
  */
 const $ = new Env('领券中心签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 if ($.isNode()) {
@@ -41,6 +25,7 @@ if ($.isNode()) {
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let allMessage = '';
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
