@@ -18,7 +18,7 @@
 guaopencard74="true"
 每个账号之间延迟 100=延迟100秒 0=延迟0秒会使用每3个账号延迟60秒
 guaopenwait_All 所有
-guaopenwait74="0"
+guaopenwait74="100"
 
 
 All变量适用

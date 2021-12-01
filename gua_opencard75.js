@@ -35,7 +35,7 @@ cron:47 2 1-15 12 *
 */
 let guaopencard_addSku = "true"
 let guaopencard = "true"
-let guaopenwait = "0"
+let guaopenwait = "100"
 let guaopencard_draw = "5"
 
 const $ = new Env('12.1~12.15 12.12品牌礼遇 天降惊喜');
