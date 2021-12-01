@@ -30,13 +30,13 @@ cron:47 2 1-15 12 *
 ============Quantumultx===============
 [task_local]
 #12.1~12.15 12.12品牌礼遇 天降惊喜
-47 2 1-15 12 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard75.js, tag=12.1~12.15 12.12品牌礼遇 天降惊喜, enabled=true
+47 2 1-15 12 * gua_opencard75.js, tag=12.1~12.15 12.12品牌礼遇 天降惊喜, enabled=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
-let guaopencard_draw = "0"
+let guaopencard_draw = "5"
 
 const $ = new Env('12.1~12.15 12.12品牌礼遇 天降惊喜');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
