@@ -158,7 +158,7 @@ let strCustomArr = [];
 let strCustomTempArr = [];
 let Notify_CKTask = "/ql/scripts/LJMX996_jd_aaron/ck_check_up.py";
 let Notify_SkipText = [];
-async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By LJMX996-信条') {
+async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By JOJO') {
     console.log(`开始发送通知...`);
     try {
         //Reset 变量
