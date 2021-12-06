@@ -16,7 +16,7 @@ const $ = new Env('京东生鲜每日抽奖');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
 let configCode = "8041d3890db747c89ebf9442c78ec165";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
