@@ -22,7 +22,7 @@ except Exception as e:
 requests.packages.urllib3.disable_warnings()
 
 
-run_send='no'              # yes或no, yes则启用通知推送服务
+run_send='yes'              # yes或no, yes则启用通知推送服务
 jd_golden_yearendBonus_runtask="yes"       # 是否做任务，yes则做，no则不做任务，直接助力开红包,默认yes
 
 
@@ -295,10 +295,10 @@ def splitHongbao_getHomeData_helpcode(cookie,inviteCode):
 # 账号1助力作者
 def author_helpcode(cookie):
     url_list = [
-        'https://raw.fastgit.org/wuye999/myScripts/main/jd/helpcode/helpcode.json',
-        'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/jd/helpcode/helpcode.json',
-        'https://cdn.jsdelivr.net/gh/wuye999/myScripts@main/jd/helpcode/helpcode.json',
-        'https://raw.githubusercontent.com/wuye999/myScripts/main/jd/helpcode/helpcode.json',
+        'https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json',
+        'https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json',
+        'https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json',
+        'https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json',
     ]
     for e,url in enumerate(url_list):
         try:
