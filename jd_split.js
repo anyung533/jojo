@@ -65,15 +65,15 @@ $.shareCodes = [];
       await jdSplit()
     }
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json')
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/split.json')
   if (!res) {
-    $.http.get({url: 'https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    $.http.get({url: 'https://raw.githubusercontent.com/anyung533/jojo/main/file/split.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json')
+    res = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/split.json')
   }
-  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json')
+  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/split.json')
   if (!res2) {
-    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/helpcode.json')
+    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/anyung533/jojo/main/file/split.json')
   }
   $.newShareCodes = [...new Set([...$.shareCodes, ...(res || []), ...(res2 || [])])]
   for (let i = 0; i < cookiesArr.length; i++) {
