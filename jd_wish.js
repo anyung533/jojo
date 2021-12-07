@@ -5,7 +5,7 @@
 ===============Quantumultx===============
 [task_local]
 #众筹许愿池
-40 0,10 * * * jd_wish.js
+40 0,13 * * * jd_wish.js
 
  */
 const $ = new Env('众筹许愿池');
