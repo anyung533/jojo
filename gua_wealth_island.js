@@ -1,7 +1,7 @@
 /*
   https://st.jingxi.com/fortune_island/index2.html
 
-  18 4,15 * * * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island.js 财富大陆
+  18 0,6-23/2 * * * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_wealth_island.js 财富大陆
 
 */
 
@@ -20,7 +20,7 @@ function randomString(e) {
 }
 $.InviteList = []
 $.innerInviteList = [];
-const HelpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
+const HelpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
 
 // 热气球接客 每次运行接客次数
 let serviceNum = 10;// 每次运行接客次数
@@ -41,7 +41,6 @@ if ($.isNode()) {
 $.appId = 10032;
 
 !(async () => {
-    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg('【京东账号一】宠汪汪积分兑换奖品失败', '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return
@@ -180,14 +179,14 @@ async function GetProp(){
     $.propTask = await taskGet(`story/GetPropTask`, '_cfd_t,bizCode,dwEnv,ptag,source,strZone', '&ptag=')
     if($.propTask && $.propTask.Data && $.propTask.Data.TaskList){
       for(let t of $.propTask.Data.TaskList || []){
-        if([9,11].includes(t.dwPointType)) continue
         let res = ''
         if(t.dwCompleteNum < t.dwTargetNum){
+          if([9,11].includes(t.dwPointType)) continue
           res = await taskGet('DoTask2', '_cfd_t,bizCode,configExtra,dwEnv,ptag,source,strZone,taskId', `&ptag=&taskId=${t.ddwTaskId}&configExtra=`)
           if (res.ret === 0) {
             console.log(`[${t.strTaskName}]加速卡任务完成`)
           } else {
-            console.log(`[${t.strTaskName}]加速卡任务失败`, res)
+            console.log(`[${t.strTaskName}]加速卡任务失败`, $.toStr(res,res))
             await $.wait(2000)
             continue
           }
@@ -197,8 +196,16 @@ async function GetProp(){
           res = await taskGet('Award2', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', `&ptag=&taskId=${t.ddwTaskId}`)
           if (res.ret === 0) {
             console.log(`[${t.strTaskName}]加速卡领取成功`)
+            if(res.data.prizeInfo){
+              let task = $.toObj(res.data.prizeInfo,res.data.prizeInfo)
+              let msg = []
+              for(let card of task.CardInfo.CardList || []){
+                msg.push(card.strCardName)
+              }
+              console.log(`获得[${msg.join(',')}]加速卡`)
+            }
           } else {
-            console.log(`[${t.strTaskName}]加速卡领取失败`, res)
+            console.log(`[${t.strTaskName}]加速卡领取失败`, $.toStr(res,res))
             await $.wait(2000)
             continue
           }
@@ -222,7 +229,7 @@ async function GetProp(){
             if(res.ddwCardTargetTm > 0 ) console.log(`[金币卡]结束时间:${$.time('yyyy-MM-dd HH:mm:ss',res.ddwCardTargetTm*1000)}`)
             flag += 1
           } else {
-            console.log(`[${card.strCardName}]金币卡使用失败`, res)
+            console.log(`[${card.strCardName}]金币卡使用失败`, $.toStr(res,res))
           }
           await $.wait(2000)
         }
@@ -237,7 +244,7 @@ async function GetProp(){
             if(res.ddwCardTargetTm > 0 ) console.log(`[财富卡]结束时间:${$.time('yyyy-MM-dd HH:mm:ss',res.ddwCardTargetTm*1000)}`)
             flag += 2
           } else {
-            console.log(`[${card.strCardName}]财富卡使用失败`, res)
+            console.log(`[${card.strCardName}]财富卡使用失败`, $.toStr(res,res))
           }
           await $.wait(2000)
         }
@@ -344,7 +351,7 @@ async function StoryInfo(){
 async function buildList(){
   try{
     await $.wait(2000)
-    console.log(`\n升级房屋、收集金币`)
+    console.log(`\n升级房屋、收集金币\n(升级：需要当前金币大于升级金币的3.5倍)`)
     if($.buildList){
       for(let i in $.buildList){
         let item = $.buildList[i]
@@ -370,7 +377,7 @@ async function buildList(){
           if(item.dwLvl == 0){
             await taskGet(`user/createbuilding`, stk, additional)
           }else{
-            if(GetBuildInfo){
+            if(GetBuildInfo && GetBuildInfo.ddwNextLvlCostCoin * 3.5 < parseInt($.HomeInfo.ddwCoinBalance,10)){
               additional = `&strBuildIndex=${GetBuildInfo.strBuildIndex}&ddwCostCoin=${GetBuildInfo.ddwNextLvlCostCoin}`
               stk = `_cfd_t,bizCode,ddwCostCoin,dwEnv,ptag,source,strBuildIndex,strZone`
               let update = await taskGet(`user/BuildLvlUp`, stk, additional)
