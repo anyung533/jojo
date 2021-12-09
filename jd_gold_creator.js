@@ -5,6 +5,7 @@
 ==============quantumultx=============
 [task_local]
 #金榜创造营
+19 5,12 * * * jd_gold_creator.js
 
  */
 const $ = new Env('金榜创造营');
@@ -29,6 +30,7 @@ if ($.isNode()) {
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
@@ -88,7 +90,7 @@ async function getDetail() {
   for (let item of $.subTitleInfos) {
     console.log(`\n开始给【${item['longTitle']}】主题下的商品进行投票`);
     await goldCreatorDetail(item['matGrpId'], item['subTitleId'], item['taskId'], item['batchId']);
-    await $.wait(2000);
+    await $.wait(4000);
   }
 }
 function goldCreatorTab() {
@@ -199,7 +201,7 @@ async function doTask2(batchId) {
         body['type'] = 2;
       }
       await goldCreatorDoTask(body);
-      await $.wait(2000);
+      await $.wait(4000);
     }
   }
   if ($.signTask['taskStatus'] === 1) {
