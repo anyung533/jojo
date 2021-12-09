@@ -1,7 +1,7 @@
 /*
   https://st.jingxi.com/fortune_island/index2.html
 
-  18 0,6-23/2 * * * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_wealth_island.js 财富大陆
+  18 4,15 * * * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island.js 财富大陆
 
 */
 
@@ -20,7 +20,7 @@ function randomString(e) {
 }
 $.InviteList = []
 $.innerInviteList = [];
-const HelpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
+const HelpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
 
 // 热气球接客 每次运行接客次数
 let serviceNum = 10;// 每次运行接客次数
@@ -41,6 +41,7 @@ if ($.isNode()) {
 $.appId = 10032;
 
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg('【京东账号一】宠汪汪积分兑换奖品失败', '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return
