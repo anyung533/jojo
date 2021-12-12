@@ -34,11 +34,11 @@ cron:47 3 13-20/2 12 *
 ============Quantumultx===============
 [task_local]
 #12.12~12.20 狂欢购
-47 3 13-20/2 12 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard83.js, tag=12.12~12.20 狂欢购, enabled=true
+47 3 13-20/2 12 * gua_opencard83.js, tag=12.12~12.20 狂欢购, enabled=true
 
 */
-let guaopencard_addSku = "false"
-let guaopencard = "false"
+let guaopencard_addSku = "true"
+let guaopencard = "true"
 let guaopenwait = "0"
 
 const $ = new Env('12.12~12.20 狂欢购');
