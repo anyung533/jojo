@@ -255,8 +255,7 @@ async function taskList() {
           if (task4.state === 2 && task1.state === 2 && task2.state === 2) {
             console.log('\n\n----taskList的任务全部做完了---\n\n')
             console.log(`分享好友助力 ${task5.finishNum}/${task5.totalNum}\n\n`)
-          } else {
-            console.log(`请继续等待,正在做任务,不要退出哦`)
+          } 
             await taskList();
           }
         }
