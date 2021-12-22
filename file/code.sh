@@ -45,7 +45,7 @@ name_js=(
   anyung533_jojo_code_plantBean
   anyung533_jojo_code_dreamFactory
   code_jdfactory
-  anyung533_jojo_code_jdzz
+  code_jdzz
   anyung533_jojo_code_crazy_joy
   anyung533_jojo_code_bookshop
   anyung533_jojo_code_cash
