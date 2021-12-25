@@ -67,6 +67,7 @@ if ($.isNode()) {
       }
       await dpqd()
       await showMsg()
+      await $.wait(1500)
     }
   }
   if ($.isNode() && allMessage) {
