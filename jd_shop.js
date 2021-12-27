@@ -7,7 +7,7 @@
 ===============Quantumultx===============
 [task_local]
 #进店领豆
-0 0 * * * jd_shop.js, tag=进店领豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_shop.png, enabled=true
+10 0 * * * jd_shop.js, tag=进店领豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_shop.png, enabled=true
 ================Loon============
 [Script]
 cron "10 0 * * *" script-path=jd_shop.js,tag=进店领豆
