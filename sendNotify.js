@@ -166,7 +166,7 @@ let isLogin = false;
 if (process.env.NOTIFY_SHOWNAMETYPE) {
     ShowRemarkType = process.env.NOTIFY_SHOWNAMETYPE;
 }
-async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By LJMX996-信条',strsummary="") {
+async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By JOJO',strsummary="") {
     console.log(`开始发送通知...`);
 	
     try {
@@ -1480,7 +1480,7 @@ function getRemark(strRemark) {
     }
 }
 
-async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n\n本通知 By LJMX996-信条', strsummary = "") {
+async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n\n本通知 By JOJO', strsummary = "") {
 
     try {
         var Uid = "";
