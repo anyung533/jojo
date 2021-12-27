@@ -260,7 +260,7 @@ function shareCodesFormat() {
   return new Promise(async resolve => {
     $.newShareCodes = [];
     let inviteCodes = [
-      '_IaDnpeEjwAXeCJ4aGO0qcAdoUJQ3Dik'
+      'fuck@JDJB'
     ];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');

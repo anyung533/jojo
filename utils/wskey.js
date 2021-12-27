@@ -11,10 +11,10 @@ hostname = api.m.jd.com
 
 # wskey
 
-#京喜
+#京喜(已经废了)
 ^https:\/\/api\.m\.jd\.com\/api\?functionId=jxssdarkword url script-request-header https://raw.githubusercontent.com/LJMX996/jd/aaron/utils/wskey.js
 # 京东
-^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=serverConfig url script-request-header https://raw.githubusercontent.com/LJMX996/jd/aaron/utils/wskey.js
+^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=getIosDegrade url script-request-header https://raw.githubusercontent.com/LJMX996/jd/aaron/utils/wskey.js
 
 
 */
@@ -23,11 +23,11 @@ const $ = new Env("wskey")
 
 let cookie = $request.headers.Cookie
 let wskey = cookie.match(/(wskey=[^;]*)/)[1]
-let pin = cookie.match(/(pin=[^;]*)/)[1]
+
 console.log('================')
-console.log(`${pin};${wskey};`)
+console.log(`${wskey};`)
 console.log('================')
-$.msg(`${pin};`, "的wskey获取成功！")
+$.msg("wskey获取成功！")
 
 
 

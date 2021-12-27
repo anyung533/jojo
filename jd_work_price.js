@@ -1,6 +1,6 @@
 /*
 
-21 4,23 * * * jd_work_price.js
+21 4,12,20 * * * jd_work_price.js
 
 */
 
