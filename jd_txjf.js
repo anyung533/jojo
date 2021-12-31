@@ -7,14 +7,8 @@
 =================================Quantumultx=========================
 [task_local]
 #通讯积分
-20 10 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_txjf.js, tag=通讯积分, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
-=================================Loon===================================
-[Script]
-cron "20 10 * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_txjf.js,tag=通讯积分
-===================================Surge================================
-通讯积分 = type=cron,cronexp="20 10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_txjf.js
-====================================小火箭=============================
-通讯积分 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_txjf.js, cronexpr="20 10 * * *", timeout=3600, enable=true
+20 10,18 * * * jd_txjf.js
+
  */
 const $ = new Env('通讯积分');
 const notify = $.isNode() ? require('./sendNotify') : '';

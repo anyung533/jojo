@@ -1,5 +1,5 @@
 /*
-cron "30 * * * *" jd_CheckCK.js, tag:京东CK检测by-ccwav
+cron "30 0-23/3 * * *" jd_CheckCK.js, tag:京东CK检测by-ccwav
  */
 //详细说明参考 https://github.com/ccwav/QLScript2.
 const $ = new Env('京东CK检测');
@@ -118,12 +118,12 @@ if ($.isNode() && process.env.CHECKCK_CKNOWARNERROR) {
 
 if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
 
-    var strTempNotify = process.env.CHECKCK_ALLNOTIFY ? process.env.CHECKCK_ALLNOTIFY.split('&') : [];
-    if (strTempNotify.length > 0) {
+    strAllNotify = process.env.CHECKCK_ALLNOTIFY;
+/*     if (strTempNotify.length > 0) {
         for (var TempNotifyl in strTempNotify) {
             strAllNotify += strTempNotify[TempNotifyl] + '\n';
         }
-    }
+    } */
     console.log(`检测到设定了温馨提示,将在推送信息中置顶显示...`);
     strAllNotify = `\n【✨✨✨✨温馨提示✨✨✨✨】\n` + strAllNotify;
     console.log(strAllNotify);
