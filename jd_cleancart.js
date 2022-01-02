@@ -1,6 +1,6 @@
 /*
 #清空购物车
-20 11,23 * * * jd_cleancart.js, tag=清空购物车
+20 23 * * * jd_cleancart.js, tag=清空购物车
 
 
 gua_cleancart_Run="true"
