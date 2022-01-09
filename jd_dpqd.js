@@ -1,5 +1,5 @@
 /*
-cron 1 0,1,8 * * * jd_dpqd.js, tag=店铺签到diy
+cron 1 0,1,12 * * * jd_dpqd.js, tag=店铺签到diy
 */
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
