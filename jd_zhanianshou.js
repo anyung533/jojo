@@ -5,11 +5,11 @@ by: https://github.com/shufflewzc/faker2/blob/main/jd_zhanianshou.js
 =================================Quantumultx=========================
 [task_local]
 #炸年兽
-0 0-23/5 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_zhanianshou.js, tag=炸年兽, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 0-23/5 * * * script-path=jd_zhanianshou.js, tag=炸年兽, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =================================Loon===================================
 [Script]
-cron "0 0-23/5 * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_zhanianshou.js,tag=炸年兽
+cron "0 0-23/5 * * *" https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_zhanianshou.js,tag=炸年兽
 
 ===================================Surge================================
 炸年兽 = type=cron,cronexp="0 0-23/5 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_zhanianshou.js
@@ -25,7 +25,7 @@ const $ = new Env('炸年兽');
 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
-
+let FS_LEVEL='true'
 let cookiesArr = [],
     cookie = '',
     message;
