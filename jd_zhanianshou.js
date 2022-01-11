@@ -26,6 +26,7 @@ const $ = new Env('炸年兽');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 let FS_LEVEL='true'
+let ZNS='true'        
 let cookiesArr = [],
     cookie = '',
     message;
