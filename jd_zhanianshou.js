@@ -5,7 +5,7 @@ by: https://github.com/shufflewzc/faker2/blob/main/jd_zhanianshou.js
 =================================Quantumultx=========================
 [task_local]
 #炸年兽
-0 0-23/5 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_zhanianshou.js, tag=炸年兽, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 0-23/5 * * * jd_zhanianshou.js, tag=炸年兽, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =================================Loon===================================
 [Script]
@@ -17,6 +17,8 @@ cron "0 0-23/5 * * *" script-path=https://raw.githubusercontent.com/jiulan/platy
 ====================================小火箭=============================
 炸年兽 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_zhanianshou.js, cronexpr="0 0-23/5 * * *", timeout=3600, enable=true
  */
+let ZNS = "true"
+let FS_LEVEL = "card"
 if (process.env.ZNS != 'true') {
     console.log('脚本默认不运行,请设置环境变量ZNS为true运行,可能黑号,运行前最少手动进去过一次')
     return
