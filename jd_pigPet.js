@@ -10,10 +10,18 @@
 ===============Quantumultx===============
 [task_local]
 #京东金融养猪猪
-12 0-23/6 * * * jd_pigPet.js, tag=京东金融养猪猪, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdyz.png, enabled=true
+12 0-23/6 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_pigPet.js, tag=京东金融养猪猪, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdyz.png, enabled=true
 
- */
+================Loon==============
+[Script]
+cron "12 0-23/6 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_pigPet.js, tag=京东金融养猪猪
 
+===============Surge=================
+京东金融养猪猪 = type=cron,cronexp="12 0-23/6 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_pigPet.js
+
+============小火箭=========
+京东金融养猪猪 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_pigPet.js, cronexpr="12 0-23/6 * * *", timeout=3600, enable=true
+*/
 const $ = new Env('金融养猪');
 const url = require('url');
 let cookiesArr = [], cookie = '', allMessage = '';
@@ -22,7 +30,7 @@ const MISSION_BASE_API = `https://ms.jr.jd.com/gw/generic/mission/h5/m`;
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let shareId = "sb"
+let shareId = "hRYQeeaVYXQBX1Mguan2kA"
 $.shareCodes = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -56,11 +64,11 @@ if ($.isNode()) {
       await jdPigPet();
     }
   }
-  let res = await getAuthorShareCode('')
-  if (1 == 0) {
-    $.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/pig.json')
+  if (!res) {
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/pig.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(2000)
-    res = await getAuthorShareCode('')
+    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/pig.json')
   }
   $.shareCodes = [...new Set([...$.shareCodes, ...(res || [])])]
   console.log($.shareCodes)
