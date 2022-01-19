@@ -21,6 +21,13 @@ $.inviteCodeList = [];
 let cookiesArr = [];
 let UA, token, UAInfo = {}
 $.appId = 10028;
+function oc(fn, defaultVal) {//optioanl chaining
+  try {
+    return fn()
+  } catch (e) {
+    return undefined
+  }
+}
 let cardinfo = {
   "16": "小黄鸡",
   "17": "辣子鸡",
@@ -139,26 +146,30 @@ async function pasture() {
         console.log(`\n温馨提示：${$.UserName} 请先手动完成【新手指导任务】再运行脚本再运行脚本\n`);
         return;
       }
-      $.currentStep = $.homeInfo?.finishedtaskId
-      console.log(`打印新手流程进度：当前进度：${$.currentStep}，下一流程：${$.homeInfo.maintaskId}`)
-      if ($.homeInfo.maintaskId !== "pause" || isNew($.currentStep)) {
-        console.log(`开始初始化`)
-        $.step = isNew($.currentStep) ? isNew($.currentStep, true) : $.homeInfo.maintaskId
-        await takeGetRequest('DoMainTask');
-        for (let i = 0; i < 20; i++) {
-          if ($.DoMainTask.maintaskId !== "pause") {
-            await $.wait(2000)
-            $.currentStep = $.DoMainTask?.finishedtaskId
-            $.step = $.DoMainTask.maintaskId
-            await takeGetRequest('DoMainTask');
-          } else if (isNew($.currentStep)) {
-            $.step = isNew($.currentStep, true)
-            await takeGetRequest('DoMainTask');
-          } else {
-            console.log(`初始化成功\n`)
-            break
+      try {
+        $.currentStep = oc(() => $.homeInfo.finishedtaskId)
+        console.log(`打印新手流程进度：当前进度：${$.currentStep}，下一流程：${$.homeInfo.maintaskId}`)
+        if ($.homeInfo.maintaskId !== "pause" || isNew($.currentStep)) {
+          console.log(`开始初始化`)
+          $.step = isNew($.currentStep) ? isNew($.currentStep, true) : $.homeInfo.maintaskId
+          await takeGetRequest('DoMainTask');
+          for (let i = 0; i < 20; i++) {
+            if ($.DoMainTask.maintaskId !== "pause") {
+              await $.wait(2000)
+              $.currentStep = oc(() => $.DoMainTask.finishedtaskId)
+              $.step = $.DoMainTask.maintaskId
+              await takeGetRequest('DoMainTask');
+            } else if (isNew($.currentStep)) {
+              $.step = isNew($.currentStep, true)
+              await takeGetRequest('DoMainTask');
+            } else {
+              console.log(`初始化成功\n`)
+              break
+            }
           }
         }
+      } catch (e) {
+        console.warn('活动初始化错误')
       }
       console.log('获取活动信息成功');
       console.log(`互助码：${$.homeInfo.sharekey}`);
@@ -168,14 +179,14 @@ async function pasture() {
         let vo = $.taskList[key]
         if (vo.taskName === "邀请好友助力养鸡" || vo.taskType === 4) {
           if (vo.completedTimes >= vo.configTargetTimes) {
-            //console.log(`助力已满，不上传助力码`)
+            //console.log(`助力已满`)
           } else {
             $.inviteCodeList.push($.homeInfo.sharekey);
             await $.wait(2000)
           }
         }
       }
-      const petNum = ($.homeInfo?.petinfo || []).length
+      const petNum = (oc(() => $.homeInfo.petinfo) || []).length
       await takeGetRequest('GetCardInfo');
       if ($.GetCardInfo && $.GetCardInfo.cardinfo) {
         let msg = '';
@@ -631,7 +642,7 @@ function dealReturn(type, data) {
         $.homeInfo = data.data;
         $.activeid = $.homeInfo.activeid
         $.activekey = $.homeInfo.activekey || null
-        $.coins = $.homeInfo?.coins || 0;
+        $.coins = oc(() => $.homeInfo.coins) || 0;
         if ($.homeInfo.giftcabbagevalue) {
           console.log(`登陆获得白菜：${$.homeInfo.giftcabbagevalue} 颗`);
         }
