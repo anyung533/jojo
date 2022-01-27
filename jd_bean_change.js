@@ -54,7 +54,6 @@ let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let intPerSent = 0;
 let i = 0;
-let DisableCash = "false";
 let llShowMonth = false;
 let Today = new Date();
 let strAllNotify="";
@@ -62,7 +61,7 @@ let strSubNotify="";
 let llPetError=false;
 let strGuoqi="";
 let RemainMessage = '\n';
-RemainMessage += "⭕提醒:⭕" + '\n';
+RemainMessage += "⭕活动攻略:⭕" + '\n';
 RemainMessage += '【极速金币】京东极速版->我的->金币(极速版使用)\n';
 RemainMessage += '【京东赚赚】微信->京东赚赚小程序->底部赚好礼->提现无门槛红包(京东使用)\n';
 RemainMessage += '【京东秒杀】京东->中间频道往右划找到京东秒杀->中间点立即签到->兑换无门槛红包(京东使用)\n';
@@ -70,18 +69,21 @@ RemainMessage += '【东东萌宠】京东->我的->东东萌宠,完成是京东
 RemainMessage += '【领现金】京东->我的->东东萌宠->领现金(微信提现+京东红包)\n';
 RemainMessage += '【东东农场】京东->我的->东东农场,完成是京东红包,可以用于京东app的任意商品\n';
 RemainMessage += '【京喜工厂】京喜->我的->京喜工厂,完成是商品红包,用于购买指定商品(不兑换会过期)\n';
+RemainMessage += '【京东金融】京东金融app->我的->养猪猪,完成是白条支付券,支付方式选白条支付时立减.\n';
 RemainMessage += '【其他】京喜红包只能在京喜使用,其他同理';
-let BEANCHANGE_PERSENT="170"
+let BEANCHANGE_PERSENT="10"
 
 let WP_APP_TOKEN_ONE = "";
+
 let TempBaipiao = "";
-if ($.isNode() && process.env.WP_APP_TOKEN_ONE) {
-	WP_APP_TOKEN_ONE = process.env.WP_APP_TOKEN_ONE;
-}
+
 
 let doExJxBeans ="false";
 let time = new Date().getHours();
 if ($.isNode()) {
+	if (process.env.WP_APP_TOKEN_ONE) {		
+		WP_APP_TOKEN_ONE = process.env.WP_APP_TOKEN_ONE;
+	}
 	if(process.env.BEANCHANGE_ExJxBeans=="true"){
 		if (time >= 17){ 
 			console.log(`检测到设定了临期京豆转换喜豆...`);
@@ -91,13 +93,11 @@ if ($.isNode()) {
 		}
 	}
 }
-let doCheckJxBeans ="true";
-if ($.isNode()) {
-	if(process.env.BEANCHANGE_CheckJxBeans=="true"){
-		console.log(`检测到设定了查询喜豆信息...`);
-		doCheckJxBeans = process.env.BEANCHANGE_ExJxBeans;	
-	}
-}
+if(WP_APP_TOKEN_ONE)
+	console.log(`检测到已配置Wxpusher的Token，启用一对一推送...`);
+else
+	console.log(`检测到未配置Wxpusher的Token，禁用一对一推送...`);
+		
 if ($.isNode() && BEANCHANGE_PERSENT) {
 	intPerSent = parseInt(BEANCHANGE_PERSENT);
 	console.log(`检测到设定了分段通知:` + intPerSent);
@@ -121,15 +121,16 @@ if ($.isNode() && process.env.BEANCHANGE_USERGP4) {
 	console.log(`检测到设定了分组推送4,将禁用分段通知`);
 }
 
-if ($.isNode() && process.env.BEANCHANGE_DISABLECASH) {
-	DisableCash = process.env.BEANCHANGE_DISABLECASH;
-}
-
-
 //取消月结查询
 //if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
 	//EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
 //}
+
+if ($.isNode() && process.env.BEANCHANGE_SUBNOTIFY) {	
+	strSubNotify=process.env.BEANCHANGE_SUBNOTIFY;
+	strSubNotify+="\n";
+	console.log(`检测到预览置顶内容,将在一对一推送的预览显示...\n`);	
+}
 
 if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {	
 	strAllNotify=process.env.BEANCHANGE_ALLNOTIFY;
@@ -137,12 +138,6 @@ if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {
 	strAllNotify = `【✨✨✨✨公告✨✨✨✨】\n`+strAllNotify;
 	console.log(strAllNotify+"\n");
 	strAllNotify +=`\n🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏`
-}
-
-if ($.isNode() && process.env.BEANCHANGE_SUBNOTIFY) {	
-	strSubNotify=process.env.BEANCHANGE_SUBNOTIFY;
-	strSubNotify+="\n";
-	console.log(`检测到预览置顶内容,将在一对一推送的预览显示...\n`);	
 }
 
 
@@ -166,9 +161,114 @@ if ($.isNode()) {
 	cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 
+//查询开关
+let strDisableList = "";
+let DisableIndex=-1;
+if ($.isNode()) {	
+	strDisableList = process.env.BEANCHANGE_DISABLELIST ? process.env.BEANCHANGE_DISABLELIST.split('&') : [];
+}
 
+//喜豆查询
+let EnableJxBeans=true;
+DisableIndex=strDisableList.findIndex((item) => item === "喜豆查询");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭喜豆查询");
+	EnableJxBeans=false
+}
+	
+//汪汪乐园
+let EnableJoyPark=true;
+DisableIndex = strDisableList.findIndex((item) => item === "汪汪乐园");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭汪汪乐园查询");
+	EnableJoyPark=false
+}
+
+//京东赚赚
+let EnableJdZZ=true;
+DisableIndex = strDisableList.findIndex((item) => item === "京东赚赚");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭京东赚赚查询");
+	EnableJdZZ=false;
+}
+
+//京东秒杀
+let EnableJdMs=true;
+DisableIndex = strDisableList.findIndex((item) => item === "京东秒杀");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭京东秒杀查询");
+	EnableJdMs=false;	
+}
+	
+//东东农场
+let EnableJdFruit=true;
+DisableIndex = strDisableList.findIndex((item) => item === "东东农场");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭东东农场查询");
+	EnableJdFruit=false;	
+}
+
+//极速金币
+let EnableJdSpeed=true;
+DisableIndex = strDisableList.findIndex((item) => item === "极速金币");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭极速金币查询");
+	EnableJdSpeed=false;	
+}
+
+//京喜牧场
+let EnableJxMC=true;
+DisableIndex= strDisableList.findIndex((item) => item === "京喜牧场");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭京喜牧场查询");
+	EnableJxMC=false;	
+}
+//京喜工厂
+let EnableJxGC=true;
+DisableIndex=strDisableList.findIndex((item) => item === "京喜工厂");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭京喜工厂查询");
+	EnableJxGC=false;	
+}
+
+// 京东工厂
+let EnableJDGC=true;
+DisableIndex=strDisableList.findIndex((item) => item === "京东工厂");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭京东工厂查询");
+	EnableJDGC=false;	
+}
+//领现金
+let EnableCash=true;
+DisableIndex=strDisableList.findIndex((item) => item === "领现金");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭领现金查询");
+	EnableCash=false;	
+}	
+
+//金融养猪
+let EnablePigPet=true;
+DisableIndex=strDisableList.findIndex((item) => item === "金融养猪");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭金融养猪查询");
+	EnablePigPet=false;	
+}
+//东东萌宠
+let EnableJDPet=true;
+DisableIndex=strDisableList.findIndex((item) => item === "东东萌宠");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭东东萌宠查询");
+	EnableJDPet=false
+}
+
+DisableIndex=strDisableList.findIndex((item) => item === "活动攻略");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭活动攻略显示");
+	RemainMessage="";
+}
+
+	
 !(async() => {
-    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
 	if (!cookiesArr[0]) {
 		$.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {
 			"open-url": "https://bean.m.jd.com/bean/signIndex.action"
@@ -221,6 +321,7 @@ if ($.isNode()) {
 			$.todayinJxBean=0;
 			$.todayOutJxBean=0;	
 			$.xibeanCount = 0;
+			$.PigPet = '';
 			TempBaipiao = "";
 			strGuoqi="";
 			console.log(`******开始查询【京东账号${$.index}】${$.nickName || $.UserName}*********`);
@@ -240,19 +341,39 @@ if ($.isNode()) {
 				}
 				continue
 			}
-
-			await getJoyBaseInfo();
-			await getJdZZ();
-			await getMs();
-			await jdfruitRequest('taskInitForFarm', {
-				"version": 14,
-				"channel": 1,
-				"babelChannel": "120"
-			});
-			await getjdfruit();
-			await cash();
-			await requestAlgo();
-			await JxmcGetRequest();
+			
+			//汪汪乐园
+			if(EnableJoyPark)
+				await getJoyBaseInfo();
+			
+			//京东赚赚
+			if(EnableJdZZ)
+				await getJdZZ();
+			
+			//京东秒杀
+			if(EnableJdMs)
+				await getMs();
+			
+			//东东农场			
+			if(EnableJdFruit){
+				await jdfruitRequest('taskInitForFarm', {
+					"version": 14,
+					"channel": 1,
+					"babelChannel": "120"
+				});
+				await getjdfruit();
+			}
+			//极速金币
+			if(EnableJdSpeed)
+				await cash();
+			
+			//京喜牧场
+			if(EnableJxMC){
+				await requestAlgo();
+				await JxmcGetRequest();
+			}
+			
+			//京豆查询
 			await bean();
 			
 			if (llShowMonth) {
@@ -261,16 +382,29 @@ if ($.isNode()) {
 				console.log("月数据获取完毕，暂停10秒防止IP被黑...");
 				await $.wait(10 * 1000);
 			}
-
-			await getJxFactory(); //京喜工厂
-			await getDdFactoryInfo(); // 京东工厂
-			if (DisableCash == "false") {
+			
+			//京喜工厂
+			if(EnableJxGC)
+				await getJxFactory(); 
+			
+			// 京东工厂			
+			if(EnableJDGC)
+				await getDdFactoryInfo(); 
+			
+			//领现金
+			if(EnableCash)				
 				await jdCash();
-			}
-			if(doCheckJxBeans=="true"){
+			
+			//喜豆查询
+			if(EnableJxBeans){
 				await GetJxBeanInfo();
 				await jxbean();
 			}
+			
+			//金融养猪
+			if(EnablePigPet)	
+				await GetPigPetInfo();
+			
 			await showMsg();
 			if (intPerSent > 0) {
 				if ((i + 1) % intPerSent == 0) {
@@ -466,7 +600,7 @@ async function showMsg() {
 	//return
 	ReturnMessageTitle="";
 	ReturnMessage = "";
-	var strsummary=strSubNotify;
+	var strsummary="";
 	if (MessageUserGp2) {
 		userIndex2 = MessageUserGp2.findIndex((item) => item === $.pt_pin);
 	}
@@ -581,7 +715,7 @@ async function showMsg() {
 		}			
 	}
 	
-	if (doCheckJxBeans == "true") {
+	if (EnableJxBeans) {
 		ReturnMessage += `【今日喜豆】收${$.todayinJxBean}豆`;		
 		if ($.todayOutJxBean != 0) {
 			ReturnMessage += `,支${$.todayOutJxBean}豆`;			
@@ -597,18 +731,13 @@ async function showMsg() {
 	}
 
 
-	if (typeof $.JDEggcnt !== "undefined") {
-		if ($.JDEggcnt == 0) {
-			//ReturnMessage += `【京喜牧场】未开通或提示火爆.\n`;
-		} else {
-			ReturnMessage += `【京喜牧场】${$.JDEggcnt}枚鸡蛋\n`;
-		}
-
+	if ($.JDEggcnt) {		
+		ReturnMessage += `【京喜牧场】${$.JDEggcnt}枚鸡蛋\n`;
 	}
-	if (typeof $.JDtotalcash !== "undefined") {
+	if ($.JDtotalcash) {
 		ReturnMessage += `【极速金币】${$.JDtotalcash}币(≈${($.JDtotalcash / 10000).toFixed(2)}元)\n`;
 	}
-	if (typeof $.JdzzNum !== "undefined") {
+	if ($.JdzzNum) {
 		ReturnMessage += `【京东赚赚】${$.JdzzNum}币(≈${($.JdzzNum / 10000).toFixed(2)}元)\n`;
 	}
 	if ($.JdMsScore != 0) {
@@ -732,65 +861,85 @@ async function showMsg() {
 
 	}
 	
-	llPetError=false;
-	const response = await PetRequest('energyCollect');
-	const initPetTownRes = await PetRequest('initPetTown');
-	if(!llPetError && initPetTownRes){
-		if (initPetTownRes.code === '0' && initPetTownRes.resultCode === '0' && initPetTownRes.message === 'success') {
-			$.petInfo = initPetTownRes.result;
-			if ($.petInfo.userStatus === 0) {
-				ReturnMessage += `【东东萌宠】活动未开启!\n`;
-			} else if ($.petInfo.petStatus === 5) {
-				ReturnMessage += `【东东萌宠】${$.petInfo.goodsInfo.goodsName}已可领取!\n`;
-				TempBaipiao += `【东东萌宠】${$.petInfo.goodsInfo.goodsName}已可领取!\n`;
-				if (userIndex2 != -1) {
-					ReceiveMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
-				}
-				if (userIndex3 != -1) {
-					ReceiveMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
-				}
-				if (userIndex4 != -1) {
-					ReceiveMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
-				}
-				if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
-					allReceiveMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
-				}
-			} else if ($.petInfo.petStatus === 6) {
-				TempBaipiao += `【东东萌宠】未选择物品! \n`;
-				if (userIndex2 != -1) {
-					WarnMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
-				}
-				if (userIndex3 != -1) {
-					WarnMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
-				}
-				if (userIndex4 != -1) {
-					WarnMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
-				}
-				if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
-					allWarnMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
-				}
-			} else if (response.resultCode === '0') {
-				ReturnMessage += `【东东萌宠】${$.petInfo.goodsInfo.goodsName}`;
-				ReturnMessage += `(${(response.result.medalPercent).toFixed(0)}%,${response.result.medalNum}/${response.result.medalNum+response.result.needCollectMedalNum}块)\n`;
-			} else if (!$.petInfo.goodsInfo) {
-				ReturnMessage += `【东东萌宠】暂未选购新的商品!\n`;
-				TempBaipiao += `【东东萌宠】暂未选购新的商品! \n`;
-				if (userIndex2 != -1) {
-					WarnMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
-				}
-				if (userIndex3 != -1) {
-					WarnMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
-				}
-				if (userIndex4 != -1) {
-					WarnMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
-				}
-				if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
-					allWarnMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
-				}
+	if ($.PigPet) {
+		if (userIndex2 != -1) {
+			ReceiveMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】${$.PigPet} (金融养猪)\n`;
+		}
+		if (userIndex3 != -1) {
+			ReceiveMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】${$.PigPet} (金融养猪)\n`;
+		}
+		if (userIndex4 != -1) {
+			ReceiveMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】${$.PigPet} (金融养猪)\n`;
+		}
+		if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
+			allReceiveMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】${$.PigPet} (金融养猪)\n`;
+		}
 
+		TempBaipiao += `【金融养猪】${$.PigPet} 可以兑换了!\n`;
+
+	}
+	if(EnableJDPet){
+		llPetError=false;
+		const response = await PetRequest('energyCollect');
+		const initPetTownRes = await PetRequest('initPetTown');
+		if(!llPetError && initPetTownRes){
+			if (initPetTownRes.code === '0' && initPetTownRes.resultCode === '0' && initPetTownRes.message === 'success') {
+				$.petInfo = initPetTownRes.result;
+				if ($.petInfo.userStatus === 0) {
+					ReturnMessage += `【东东萌宠】活动未开启!\n`;
+				} else if ($.petInfo.petStatus === 5) {
+					ReturnMessage += `【东东萌宠】${$.petInfo.goodsInfo.goodsName}已可领取!\n`;
+					TempBaipiao += `【东东萌宠】${$.petInfo.goodsInfo.goodsName}已可领取!\n`;
+					if (userIndex2 != -1) {
+						ReceiveMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
+					}
+					if (userIndex3 != -1) {
+						ReceiveMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
+					}
+					if (userIndex4 != -1) {
+						ReceiveMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
+					}
+					if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
+						allReceiveMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】${$.petInfo.goodsInfo.goodsName}可以兑换了! (东东萌宠)\n`;
+					}
+				} else if ($.petInfo.petStatus === 6) {
+					TempBaipiao += `【东东萌宠】未选择物品! \n`;
+					if (userIndex2 != -1) {
+						WarnMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
+					}
+					if (userIndex3 != -1) {
+						WarnMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
+					}
+					if (userIndex4 != -1) {
+						WarnMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
+					}
+					if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
+						allWarnMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】未选择物品! (东东萌宠)\n`;
+					}
+				} else if (response.resultCode === '0') {
+					ReturnMessage += `【东东萌宠】${$.petInfo.goodsInfo.goodsName}`;
+					ReturnMessage += `(${(response.result.medalPercent).toFixed(0)}%,${response.result.medalNum}/${response.result.medalNum+response.result.needCollectMedalNum}块)\n`;
+				} else if (!$.petInfo.goodsInfo) {
+					ReturnMessage += `【东东萌宠】暂未选购新的商品!\n`;
+					TempBaipiao += `【东东萌宠】暂未选购新的商品! \n`;
+					if (userIndex2 != -1) {
+						WarnMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
+					}
+					if (userIndex3 != -1) {
+						WarnMessageGp3 += `【账号${IndexGp3} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
+					}
+					if (userIndex4 != -1) {
+						WarnMessageGp4 += `【账号${IndexGp4} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
+					}
+					if (userIndex2 == -1 && userIndex3 == -1 && userIndex4 == -1) {
+						allWarnMessage += `【账号${IndexAll} ${$.nickName || $.UserName}】暂未选购新的商品! (东东萌宠)\n`;
+					}
+
+				}
 			}
 		}
 	}
+	
 	if(strGuoqi){		
 		ReturnMessage += `💸💸💸临期京豆明细💸💸💸\n`;
 		ReturnMessage += `${strGuoqi}`;
@@ -819,12 +968,15 @@ async function showMsg() {
 		ReturnMessage=`【账号名称】${$.nickName || $.UserName}\n`+ReturnMessage;
 		
 		if (TempBaipiao) {
-			strsummary=TempBaipiao +strsummary;			
+			strsummary=strSubNotify+TempBaipiao +strsummary;			
 			TempBaipiao = `【⏰商品白嫖活动提醒⏰】\n` + TempBaipiao;
 			ReturnMessage = TempBaipiao + `\n` + ReturnMessage;			
+		} else {
+			strsummary = strSubNotify + strsummary;				
 		}
 		
 		ReturnMessage += RemainMessage;
+		
 		if(strAllNotify)
 			ReturnMessage=strAllNotify+`\n`+ReturnMessage;
 		
@@ -983,10 +1135,10 @@ async function Monthbean() {
 }
 
 async function jdCash() {
-	let functionId = "cash_homePage"
-		let body = "%7B%7D"
-		let uuid = randomString(16)
-		console.log(`正在获取领现金任务签名...`);
+	let functionId = "cash_homePage";
+	let body = "%7B%7D";
+	let uuid = randomString(16);
+	console.log(`正在获取领现金任务签名...`);
 	isSignError = false;
 	let sign = await getSign(functionId, decodeURIComponent(body), uuid)
 		if (isSignError) {
@@ -1472,10 +1624,11 @@ function getMs() {
 					console.log(`getMs API请求失败，请检查网路重试`)
 				} else {
 					if (safeGet(data)) {
+						//console.log("Debug :" + JSON.stringify(data));
 						data = JSON.parse(data);						
-							if (data.result.assignment.assignmentPoints) {
-								$.JdMsScore = data.result.assignment.assignmentPoints || 0
-							}
+						if (data.result.assignment.assignmentPoints) {
+							$.JdMsScore = data.result.assignment.assignmentPoints || 0
+						}
 					}
 				}
 			} catch (e) {
@@ -2308,6 +2461,60 @@ function timeFormat(time) {
 		date = new Date();
 	}
 	return date.getFullYear() + '-' + ((date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)) + '-' + (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate());
+}
+
+
+function GetPigPetInfo() {
+    return new Promise(async resolve => {
+        const body = {
+            "shareId": "",
+            "source": 2,
+            "channelLV": "juheye",
+            "riskDeviceParam": "{}",
+        }
+        $.post(taskPetPigUrl('pigPetLogin', body), async(err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`GetPigPetInfo API请求失败，请检查网路重试`)
+                } else {
+                    if (data) {
+                        data = JSON.parse(data);
+                        if (data.resultData.resultData.wished && data.resultData.resultData.wishAward) {
+							$.PigPet=`${data.resultData.resultData.wishAward.name}`                           
+                        }
+                    } else {
+                        console.log(`GetPigPetInfo: 京东服务器返回空数据`)
+                    }
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            }
+            finally {
+                resolve();
+            }
+        })
+    })
+}
+
+
+function taskPetPigUrl(function_id, body) {
+  return {
+    url: `https://ms.jr.jd.com/gw/generic/uc/h5/m/${function_id}?_=${Date.now()}`,
+    body: `reqData=${encodeURIComponent(JSON.stringify(body))}`,
+    headers: {
+      'Accept': `*/*`,
+      'Origin': `https://u.jr.jd.com`,
+      'Accept-Encoding': `gzip, deflate, br`,
+      'Cookie': cookie,
+      'Content-Type': `application/x-www-form-urlencoded;charset=UTF-8`,
+      'Host': `ms.jr.jd.com`,
+      'Connection': `keep-alive`,
+      'User-Agent': UA,
+      'Referer': `https://u.jr.jd.com/`,
+      'Accept-Language': `zh-cn`
+    }
+  }
 }
 
 function GetDateTime(date) {
