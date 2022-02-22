@@ -18,9 +18,9 @@ let cookiesArr = [],
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // 这个列表填入你要助力的好友的shareCode
     //     //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-    //     '777c59875d914f6cb80ea25c44454295@47901d1388504bc1b3b175e879742cac@4bd4cca26bc146c286008d7eb26db8ff@c3be888e85c748d997692b543171071a@ddfaa2a41b974f18b0647aa2218c3ea6@61324f6c0522424fb5b1ff56583b6991@d81b185532784d33b7e6c0659bc6181e@3b1aaf7d05354c67840a2af7174363c7@91da2207ef0749b2b9d132e957416b96@b44e31c52fe34bc9b5f5d284af53571e@b5dc8a206d504ae6984105448e834428@b7d0e63f9ea34070be703152bffdda39',
+    //     '5853550f71014282912b76d95beb84c0@b58ddba3317b44ceb0ac86ea8952998c@8d724eb95e3847b6a1526587d1836f27@a80b7d1db41a4381b742232da9d22443@ce107b8f64d24f62a92292180f764018@c73ea563a77d4464b273503d3838fec1@0dd9a7fd1feb449fb1bf854a3ec0e801',
     //     //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-    //     '777c59875d914f6cb80ea25c44454295@47901d1388504bc1b3b175e879742cac@4bd4cca26bc146c286008d7eb26db8ff@c3be888e85c748d997692b543171071a@ddfaa2a41b974f18b0647aa2218c3ea6@61324f6c0522424fb5b1ff56583b6991@d81b185532784d33b7e6c0659bc6181e@3b1aaf7d05354c67840a2af7174363c7@91da2207ef0749b2b9d132e957416b96@b44e31c52fe34bc9b5f5d284af53571e@b5dc8a206d504ae6984105448e834428@b7d0e63f9ea34070be703152bffdda39',
+    //     '5853550f71014282912b76d95beb84c0@b58ddba3317b44ceb0ac86ea8952998c@8d724eb95e3847b6a1526587d1836f27@a80b7d1db41a4381b742232da9d22443@ce107b8f64d24f62a92292180f764018@c73ea563a77d4464b273503d3838fec1@0dd9a7fd1feb449fb1bf854a3ec0e801',
 ]
 let message = '',
     subTitle = '',
@@ -107,10 +107,20 @@ async function jdFruit() {
                 return
             }
             await doDailyTask();
+            console.log('等待2秒');
+            await $.wait(4000);
             await doTenWater(); //浇水十次
+            console.log('等待4秒');
+            await $.wait(4000);
             await getFirstWaterAward(); //领取首次浇水奖励
+            console.log('等待4秒');
+            await $.wait(4000);
             await getTenWaterAward(); //领取10浇水奖励
+            console.log('等待4秒');
+            await $.wait(4000);
             await getWaterFriendGotAward(); //领取为2好友浇水奖励
+            console.log('等待4秒');
+            await $.wait(4000);
             await duck();
             if (!process.env.DO_TEN_WATER_AGAIN) {
                 console.log('执行再次浇水')
@@ -124,7 +134,7 @@ async function jdFruit() {
             if ($.retry < 2) {
                 $.retry++
                     console.log(`等待3秒后重试,第:${$.retry}次`);
-                await $.wait(3000);
+                await $.wait(5000);
                 await jdFruit();
             }
         }
@@ -240,9 +250,9 @@ async function doDailyTask() {
 async function predictionFruit() {
     console.log('开始预测水果成熟时间\n');
     await initForFarm();
-	await $.wait(2000);
+	await $.wait(4000);
     await taskInitForFarm();
-	await $.wait(2000);
+	await $.wait(4000);
     let waterEveryDayT = $.farmTask.totalWaterTaskInit.totalWaterTaskTimes; //今天到到目前为止，浇了多少次水
     message += `【今日共浇水】${waterEveryDayT}次\n`;
     message += `【剩余 水滴】${$.farmInfo.farmUserPro.totalEnergy}g💧\n`;
@@ -928,7 +938,7 @@ async function gotStageAwardForFarm(type) {
 }
 //浇水API
 async function waterGoodForFarm() {
-    await $.wait(2000);
+    await $.wait(4000);
     console.log('等待了2秒');
 
     const functionId = arguments.callee.name.toString();
@@ -939,7 +949,7 @@ async function initForTurntableFarm() {
     $.initForTurntableFarmRes = await request(arguments.callee.name.toString(), { version: 4, channel: 1 });
 }
 async function lotteryForTurntableFarm() {
-    await $.wait(2000);
+    await $.wait(4000);
     console.log('等待了2秒');
     $.lotteryRes = await request(arguments.callee.name.toString(), { type: 1, version: 4, channel: 1 });
 }
