@@ -39,19 +39,19 @@ var_name=(
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
 ## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
 name_js=(
-  anyung533_jojo_code_jxnc
-  anyung533_jojo_code_fruit
-  anyung533_jojo_code_pet
-  anyung533_jojo_code_plantBean
-  anyung533_jojo_code_dreamFactory
-  anyung533_jojo_code_jdfactory
-  anyung533_jojo_code_jdzz
-  anyung533_jojo_code_crazy_joy
-  anyung533_jojo_code_bookshop
-  anyung533_jojo_code_cash
-  anyung533_jojo_code_sgmh
-  anyung533_jojo_code_cfd
-  anyung533_jojo_code_health
+  LJMX996_jd_aaron_code_jxnc
+  LJMX996_jd_aaron_code_fruit
+  LJMX996_jd_aaron_code_pet
+  LJMX996_jd_aaron_code_plantBean
+  LJMX996_jd_aaron_code_dreamFactory
+  LJMX996_jd_aaron_code_jdfactory
+  LJMX996_jd_aaron_code_jdzz
+  LJMX996_jd_aaron_code_crazy_joy
+  LJMX996_jd_aaron_code_bookshop
+  LJMX996_jd_aaron_code_cash
+  LJMX996_jd_aaron_code_sgmh
+  LJMX996_jd_aaron_code_cfd
+  LJMX996_jd_aaron_code_health
 )
 name_config=(
   Jxnc

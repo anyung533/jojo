@@ -8,7 +8,7 @@ https://3.cn/103-VBNoE
 
 5 10 3-5 1 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_UnknownTask5.js
 */
-let guaopencard = "true"
+let guaopencard = "false"
 let guaunknownTask_addSku = "true"
 
 const $ = new Env('运动户外盲盒活动');

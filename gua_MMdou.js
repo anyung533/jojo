@@ -1,9 +1,8 @@
 /*
 // https://h5.m.jd.com/rn/42yjy8na6pFsq1cx9MJQ5aTgu3kX/index.html
 
-入口：APP首页-领京豆-升级赚京豆
-cron:21 9 * * *
-21 9 * * * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_MMdou.js, tag=MM领京豆, enabled=true
+入口：首页-领京豆-升级赚京豆
+31 6,15 * * * gua_MMdou.js, tag=MM领京豆, enabled=true
 
 */
 
@@ -35,6 +34,7 @@ if ($.isNode()) {
 }
 
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg('【京东账号一】宠汪汪积分兑换奖品失败', '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return

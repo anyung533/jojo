@@ -1,8 +1,14 @@
 /**
 通天塔签到共建,签到类cron自行设置.
-cron 33 1,12 * * * jd_babel_sign.js
 入口：主页-秒杀-狂撒三亿京豆
 TG频道：https://t.me/sheeplost
+已支持IOS双京东账号,Node.js支持N个京东账号
+ 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+ 互助码shareCode请先手动运行脚本查看打印可看到
+ ==========================Quantumultx=========================
+ [task_local]
+ #通天塔签到共建
+cron 2 0,7 * * * jd_babel_sign.js
 */
 const $ = new Env('通天塔签到共建');
 const notify = $.isNode() ? require('./sendNotify') : '';

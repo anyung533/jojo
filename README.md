@@ -72,9 +72,9 @@ services:
 
 ## 使用仓库提醒(重要❗❗❗❗)
 
-> * 把仓库目录下的pull.sh文件发给机器人运行一次即可，或者复制里面第一行内容，去面板添加定时执行，执行以后记得删除定时，用下面的定时👇🏻
+👇🏻
 
-## 去面板添加这四个任务
+## 去面板添加这几个任务
 ### 更新仓库必须用下面定时，不要直接用ql repo，我可以更新pull.sh文件让你们容器自动安装需要的依赖以及文件，不需要自己手动装依赖。
 
 > * 名称:更新仓库
@@ -86,40 +86,76 @@ services:
 > * 命令:task /ql/config/pull.sh
 
 
-> * 名称:助力导出
-> * 定时: 52 3-23/3 * * *
-> * 命令:task /ql/repo/LJMX996_jd_aaron/code.sh
-
 > * 名称:依赖安装
 > * 定时: 00
 > * 命令:task /ql/repo/LJMX996_jd_aaron/yilai.sh
 > * 只需要运行一次。
 > * 2.10开始可以使用面板安装依赖
 
+
+> * 名称:助力导出(已经舍弃，不用加，需要助力的往下看)
+> * 定时: 52 3-23/3 * * *
+> * 命令:task /ql/repo/LJMX996_jd_aaron/code.sh
+
 ## 面板安装依赖
+#### 不推荐，推荐用上面的定时
 
    ```diff
 # NodeJs
-@otplib/preset-defaultjs-base64fundjsdomform-datatough-cookieaxios date-fnscrypto-jscryptodownloadtypescriptpng-jsgot
+@otplib/preset-default
+js-base64
+fund
+jsdom
+form-data
+tough-cookie
+axios 
+date-fns
+crypto-js
+crypto
+download
+typescript
+png-js
+got
 
 # Python3
-requestsjieba
+requests
+jieba
 aiohttp  #安装这个会导致重启容器以后bot死掉
 
 # Linux
-libc6-compatnodejs-currentpython3zlib-devgccjpeg-devpython3-devmusl-devfreetype-devbuild-basecairo-devpango-devgiflib-dev
+libc6-compat
+nodejs-current
+python3
+zlib-dev
+gcc
+jpeg-dev
+python3-dev
+musl-dev
+freetype-dev
+build-base
+cairo-dev
+pango-dev
+giflib-dev
 
    ```
 
 
 ### 自动互助提示
-使用上面定时导出助力默认是助力前20个账号
+拉取助力独立仓库，不用再担心toolong问题
+
+##### 独立助力仓库
+   ```diff
+ql repo https://github.com/LJMX996/code_help.git "jd_" "tmp" "USER_AGENTS.js|sendNotify.js|ql.js|JS_USER_AGENTS.js|jdCookie.js"
+   ```
+   
+使用上面独立仓库默认是助力前15个账号
 如果想助力其他数量账号，请添加变量，例如👇🏻
 
    ```diff
-export code_num="10"   
+export code_num="100"   
    ```
-   
+
+### 从这往下可以不用看了，已经舍弃，懒得删   
 然后编辑config下 → task_before.sh文件
 
 内容如下
