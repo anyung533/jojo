@@ -5,17 +5,9 @@
 ===================quantumultx================
 [task_local]
 #每日抽奖
-13 1,22,23 * * * jd_daily_lottery.js, tag=每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+13 1,12,22,23 * * * jd_daily_lottery.js, tag=每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
-=====================Loon================
-[Script]
-cron "13 1,22,23 * * *" script-path=jd_daily_lottery.js, tag=每日抽奖
 
-====================Surge================
-每日抽奖 = type=cron,cronexp="13 1,22,23 * * *",wake-system=1,timeout=3600,script-path=jd_daily_lottery.js
-
-============小火箭=========
-每日抽奖 = type=cron,script-path=jd_daily_lottery.js, cronexpr="13 1,22,23 * * *", timeout=3600, enable=true
 */
 const $ = new Env('小鸽有礼-每日抽奖');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -24,7 +16,7 @@ let activityType = '';
 let activityCode = '';
 const activityInfoList = [
   {'activityType':'WonderfulLuckDrawApi','activityCode':'1410048365793640448','title':'小哥有礼'},
-  {'activityType':'luckdraw','activityCode':'1407251415377641472','title':'每日转盘'}
+  {'activityType':'luckdraw','activityCode':'1493527662965030912','title':'每日转盘'}
 ];
 $.helpCodeList = [];
 //IOS等用户直接用NobyDa的jd cookie
@@ -253,9 +245,9 @@ function dealReturn(functionId, data) {
         $.helpCodeList.push({
           'use': $.UserName,
           'helpCpde': data.data,
-          'needHelp': missionInfo['totalNum'] - missionInfo['completeNum']
+          //'needHelp': missionInfo['totalNum'] - missionInfo['completeNum']
         });
-        console.log(`互助码(内部多账号自己互助)：${data.data}`);
+        //console.log(`互助码(内部多账号自己互助)：${data.data}`);
       }
       break;
     case 'helpFriend':
