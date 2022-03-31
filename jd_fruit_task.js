@@ -18,9 +18,9 @@ let cookiesArr = [],
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // 这个列表填入你要助力的好友的shareCode
     //     //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-    //     '777c59875d914f6cb80ea25c44454295@47901d1388504bc1b3b175e879742cac@4bd4cca26bc146c286008d7eb26db8ff@c3be888e85c748d997692b543171071a@ddfaa2a41b974f18b0647aa2218c3ea6@61324f6c0522424fb5b1ff56583b6991@d81b185532784d33b7e6c0659bc6181e@3b1aaf7d05354c67840a2af7174363c7@91da2207ef0749b2b9d132e957416b96@b44e31c52fe34bc9b5f5d284af53571e@b5dc8a206d504ae6984105448e834428@b7d0e63f9ea34070be703152bffdda39',
+    //     '5853550f71014282912b76d95beb84c0@b58ddba3317b44ceb0ac86ea8952998c@8d724eb95e3847b6a1526587d1836f27@a80b7d1db41a4381b742232da9d22443@ce107b8f64d24f62a92292180f764018@c73ea563a77d4464b273503d3838fec1@0dd9a7fd1feb449fb1bf854a3ec0e801',
     //     //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-    //     '777c59875d914f6cb80ea25c44454295@47901d1388504bc1b3b175e879742cac@4bd4cca26bc146c286008d7eb26db8ff@c3be888e85c748d997692b543171071a@ddfaa2a41b974f18b0647aa2218c3ea6@61324f6c0522424fb5b1ff56583b6991@d81b185532784d33b7e6c0659bc6181e@3b1aaf7d05354c67840a2af7174363c7@91da2207ef0749b2b9d132e957416b96@b44e31c52fe34bc9b5f5d284af53571e@b5dc8a206d504ae6984105448e834428@b7d0e63f9ea34070be703152bffdda39',
+    //     '5853550f71014282912b76d95beb84c0@b58ddba3317b44ceb0ac86ea8952998c@8d724eb95e3847b6a1526587d1836f27@a80b7d1db41a4381b742232da9d22443@ce107b8f64d24f62a92292180f764018@c73ea563a77d4464b273503d3838fec1@0dd9a7fd1feb449fb1bf854a3ec0e801',
 ]
 let message = '',
     subTitle = '',
@@ -28,7 +28,7 @@ let message = '',
     isFruitFinished = false;
 const retainWater = $.isNode() ? (process.env.retainWater ? process.env.retainWater : 100) : ($.getdata('retainWater') ? $.getdata('retainWater') : 100); //保留水滴大于多少g,默认100g;
 let jdNotify = false; //是否关闭通知，false打开通知推送，true关闭通知推送
-let jdFruitBeanCard = true; //农场使用水滴换豆卡(如果出现限时活动时100g水换20豆,此时比浇水划算,推荐换豆),true表示换豆(不浇水),false表示不换豆(继续浇水),脚本默认是浇水
+let jdFruitBeanCard = false; //农场使用水滴换豆卡(如果出现限时活动时100g水换20豆,此时比浇水划算,推荐换豆),true表示换豆(不浇水),false表示不换豆(继续浇水),脚本默认是浇水
 let randomCount = $.isNode() ? 20 : 5;
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const urlSchema = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/3KSjXqQabiTuD1cJ28QskrpWoBKT/index.html%22%20%7D`;
