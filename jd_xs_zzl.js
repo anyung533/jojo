@@ -2,12 +2,13 @@
 京享周周乐
 活动入口：京东APP --京享会员
 更新时间：2022-04-03
+by:小手冰凉 tg:@chianPLA
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #京享周周乐
-2 6 * * 1 jd_xs_zzl.js, tag=京享周周乐, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+2 6 * * 5 jd_xs_zzl.js, tag=京享周周乐, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
  */
 
 const $ = new Env('京享周周乐');
