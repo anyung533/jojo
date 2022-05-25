@@ -33,5 +33,5 @@ cd /ql/scripts && npm install -g @types/node
 cd /ql/scripts && npm install -g canvas
 cd /ql/scripts && npm install -g ts-md5
 cd /ql/scripts && npm install -g ws
-
+cd /ql/scripts && npm install -g request
 
