@@ -1,11 +1,12 @@
 /*
 京东集魔方
 ===========================
-cron:2 0,5 * * *
+
+cron:2 0,11 * * *
 ============Quantumultx===============
 [task_local]
 #集魔方
-2 0,5 * * * jd_desire.js, tag=集魔方, enabled=true
+2 0,11 * * * jd_desire.js, tag=集魔方, enabled=true
  */
 
 const $ = new Env('京东集魔方');
