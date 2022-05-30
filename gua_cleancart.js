@@ -39,7 +39,7 @@ pin3@&@不清空👉该pin不清空
 let jdSignUrl = '' // 算法url
 let Authorization = '' // 算法url token 有则填
 let cleancartRun = 'true'
-let cleancartProducts = ''
+let cleancartProducts = 'true'
 
 const $ = new Env('清空购物车');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
