@@ -38,7 +38,7 @@ pin3@&@不清空👉该pin不清空
 */
 let jdSignUrl = '' // 算法url
 let Authorization = '' // 算法url token 有则填
-let cleancartRun = 'false'
+let cleancartRun = 'true'
 let cleancartProducts = ''
 
 const $ = new Env('清空购物车');
