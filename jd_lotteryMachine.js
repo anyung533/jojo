@@ -8,6 +8,8 @@ github： https://github.com/yangtingxiao
 #京东抽奖机
 5 * * * * jd_lotteryMachine.js, tag=京东抽奖机
 
+修改自用 By xxx
+更新时间：2021-05-25 8:50
  */
 const $ = new Env('京东抽奖机&内部互助');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -20,13 +22,14 @@ Object.keys(jdCookieNode).forEach((item) => {
 if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);
 
-const appIdArr = ['1EFRRxA','1EFRQwA','1EFRYxQ','1EFRXxg','1EFVRwA','1EFVRxw','1EFRZwA','1EFRZwQ','1EFRYwA','1EFVRxg','1EFVRxQ']
-const homeDataFunPrefixArr = ['interact_template','interact_template','harmony_template','','','','','','','','','','','','','','','interact_template','interact_template']
-const collectScoreFunPrefixArr = ['','','','','','','','','','','','','','','','','','interact_template','interact_template']
+const appIdArr = ['1EFRRxA','1EFRQwA','1EFRXxg','1EFVRxg','1E1xVyqw']
+const homeDataFunPrefixArr = ['interact_template','interact_template','harmony_template','','','','','','','','','','interact_template','interact_template']
+const collectScoreFunPrefixArr = ['','','','','','','','','','','','','interact_template','interact_template']
 
 $.allShareId = {};
 main();
 async function main() {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   await help();//先账号内部互助
   await updateShareCodes();
   if (!$.body) await updateShareCodesCDN();

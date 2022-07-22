@@ -1,188 +1,105 @@
-// author: 疯疯
 /*
-幸运大转盘
-活动地址：https://pro.m.jd.com/mall/active/3ryu78eKuLyY5YipWWVSeRQEpLQP/index.html
-脚本兼容: Quantumult X, Surge, Loon, JSBox, Node.js
-==============Quantumult X==============
-[task_local]
-#幸运大转盘
-4 10 * * * jd_market_lottery.js, tag=幸运大转盘, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
-
-==============Loon==============
-[Script]
-cron "4 10 * * *" script-path=jd_market_lottery.js,tag=幸运大转盘
-
-================Surge===============
-幸运大转盘 = type=cron,cronexp="4 10 * * *",wake-system=1,timeout=3600,script-path=jd_market_lottery.js
-
-===============小火箭==========
-幸运大转盘 = type=cron,script-path=jd_market_lottery.js, cronexpr="4 10 * * *", timeout=3600, enable=true
-*/
-
-const $ = new Env("幸运大转盘");
-const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
-let cookiesArr = [],
-  cookie = "",
-  allMsg = '';
-
-if ($.isNode()) {
-  Object.keys(jdCookieNode).forEach((item) => {
-    cookiesArr.push(jdCookieNode[item]);
-  });
-  console.log(`如果出现提示 ?.data. 错误，请升级nodejs版本(进入容器后，apk add nodejs-current)`)
-  if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false") console.log = () => {};
-} else {
-  cookiesArr = [
-    $.getdata("CookieJD"),
-    $.getdata("CookieJD2"),
-    ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
-}
-const JD_API_HOST = "https://api.m.jd.com/client.action";
-!(async () => {
-    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
-  if (!cookiesArr[0]) {
-    $.msg(
-      $.name,
-      "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取",
-      "https://bean.m.jd.com/",
-      {"open-url": "https://bean.m.jd.com/"}
-    );
-    return;
-  }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(
-        cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]
-      );
-      $.index = i + 1;
-      console.log(`\n******开始【京东账号${$.index}】${$.UserName}*********\n`);
-      await main()
-    }
-  }
-  await showMsg()
-})()
-  .catch((e) => {
-    $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
-  })
-  .finally(() => {
-    $.done();
-  });
-function showMsg() {
-  return new Promise(async resolve => {
-    if (allMsg) $.msg($.name, '', allMsg);
-    resolve();
-  })
-}
-async function main() {
-  await getInfo('https://pro.m.jd.com/mall/active/3ryu78eKuLyY5YipWWVSeRQEpLQP/index.html')
-  await getInfo('https://pro.m.jd.com/mall/active/3ryu78eKuLyY5YipWWVSeRQEpLQP/index.html')
-}
-async function getInfo(url) {
-  return new Promise(resolve=>{
-    $.get({
-      url,
-      headers:{
-        "Cookie": cookie,
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-      }
-    },async (err,resp,data)=>{
-      try{
-        if(err){
-
-        }else{
-          data = $.toObj(data.match(/window.__react_data__ = (\{.*\})/)[1])
-          let taskList = data?.activityData?.floorList?.filter(vo=>vo.template==='score_task')[0]
-          //console.log(data?.activityData?.floorList)
-          for(let vo of taskList['taskItemList']){
-            for(let i = vo.joinTimes; i< vo.taskLimit;++i){
-              console.log(`去完成${vo?.flexibleData?.taskName ?? vo.enAwardK}任务，第${i+1}次`)
-              await doTask(vo.enAwardK)
-              await $.wait(500)
-            }
-          }
-          let lottery = data?.activityData?.floorList?.filter(vo=>vo.template==='choujiang_wheel')[0]
-          //console.log(lottery)
-          const {userScore,lotteryScore} = lottery.lotteryGuaGuaLe
-          if(lotteryScore<=userScore) {
-            console.log(`抽奖需要${lotteryScore}，当前${userScore}分，去抽奖`)
-            await doLottery("a84f9428da0bb36a6a11884c54300582")
-          } else {
-            console.log(`当前积分已不足去抽奖`)
-          }
-        }
-      }catch (e) {
-
-      }finally {
-        resolve()
-      }
-
+ 京东汽车兑换，500赛点兑换500京豆长期活动
+ 活动入口：京东APP首页-京东汽车-屏幕右中部，车主福利
+ 修复兑换api，Fix time:2021-09-06 22:02
+cron "0,50 0 * * *" jd_car_exchange.js
+ */
+const $ = new Env('京东汽车兑换');
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+let cookiesArr = [], cookie = '', message;
+if($.isNode()){
+    Object.keys(jdCookieNode).forEach((item) => {
+        cookiesArr.push(jdCookieNode[item])
     })
-  })
+    if(process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {
+    };
+} else {
+    cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-function doTask(enAwardK) {
-  return new Promise(resolve => {
-    $.post(taskUrl('babelDoScoreTask',{enAwardK,"isQueryResult":0,"siteClient":"apple","mitemAddrId":"","geo":{"lng":"","lat":""},"addressId":"","posLng":"","posLat":"","homeLng":"","homeLat":"","focus":"","innerAnchor":"","cv":"2.0"}),
-      (err,resp,data)=>{
-      try{
-        if(err){
+const JD_API_HOST = 'https://car-member.jd.com/api/';
+!(async() => {
+    if(!cookiesArr[0]){
+        $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
+        return;
+    }
+    for(let i = 0; i < cookiesArr.length; i++){
+        cookie = cookiesArr[i];
+        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        $.index = i + 1;
+        $.isLogin = true;
+        $.nickName = '';
+        message = '';
+        console.log(`=====京东账号${$.index} ${$.UserName}=====`)
+        await exchange();
+        await $.wait(1000)
+    }
+})().catch((e) => {
+    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+}).finally(() => {
+    $.done();
+})
 
-        }else{
-          data = $.toObj(data)
-          console.log(data.promptMsg)
+function exchange(){
+    return new Promise(resolve => {
+        $.get(taskUrl('v1/user/exchange/bean/check'), (err, resp, data) => {
+            try{
+                if(err){
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试\n`)
+                } else {
+                    if(safeGet(data)){
+                        data = JSON.parse(data);
+                        if(data.status) console.log(`兑换结果：${data.data.reason}`);
+                    }
+                }
+            } catch(e){
+                $.logErr(e, resp)
+            } finally{
+                resolve();
+            }
+        })
+    })
+}
+
+function taskUrl(function_id, body = {}){
+    return {
+        url: `${JD_API_HOST}${function_id}?timestamp=${new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000}`,
+        headers: {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "zh-cn",
+            "Connection": "keep-alive",
+            "Host": "car-member.jd.com",
+            'origin': 'https://h5.m.jd.com',
+            "Referer": "https://h5.m.jd.com/",
+            "Cookie": cookie,
+            "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
         }
-      }catch (e) {
-
-      }finally {
-        resolve()
-      }
-      })
-  })
+    }
 }
-function doLottery(enAwardK,authType="2") {
-  return new Promise(resolve => {
-    $.post(taskUrl('babelGetLottery',{enAwardK,authType}),
-      (err,resp,data)=>{
+
+function safeGet(data){
+    try{
+        if(typeof JSON.parse(data) == "object"){
+            return true;
+        }
+    } catch(e){
+        console.log(e);
+        console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
+        return false;
+    }
+}
+
+function jsonParse(str){
+    if(typeof str == "string"){
         try{
-          if(err){
-
-          }else{
-            data = $.toObj(data)
-            console.log(data.promptMsg)
-            allMsg += `【京东账号${$.index}】${$.UserName}：${data.promptMsg}\n`
-          }
-        }catch (e) {
-
-        }finally {
-          resolve()
+            return JSON.parse(str);
+        } catch(e){
+            console.log(e);
+            $.msg($.name, '', '请勿随意在BoxJs输入框修改内容\n建议通过脚本去获取cookie')
+            return [];
         }
-      })
-  })
-}
-function taskUrl(function_id, body = {}) {
-  return {
-    url: `${JD_API_HOST}/client.action?functionId=${function_id}`,
-    body: `body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=1.0.0`,
-    headers: {
-      "Cookie": cookie,
-      "origin": "https://h5.m.jd.com",
-      "referer": "https://h5.m.jd.com/",
-      'Content-Type': 'application/x-www-form-urlencoded',
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
     }
-  }
-}
-
-function safeGet(data) {
-  try {
-    if (typeof JSON.parse(data) == "object") {
-      return true;
-    }
-  } catch (e) {
-    console.log(e);
-    console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
-    return false;
-  }
 }
 
 // prettier-ignore

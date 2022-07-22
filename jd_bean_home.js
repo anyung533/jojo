@@ -55,7 +55,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
       $.nickName = '';
       message = '';
       uuid = randomString()
-      await TotalBean();
+      //await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -112,11 +112,6 @@ const JD_API_HOST = 'https://api.m.jd.com/';
   //     }
   //   }
   // }
-	if($.outFlag) {
-    let msg = '好像IP黑了，换个IP试试吧'
-    $.msg($.name, ``, `${msg}`);
-    if ($.isNode()) await notify.sendNotify(`${$.name}`, `${msg}`);
-  }
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -133,10 +128,10 @@ async function jdBeanHome() {
     //   await $.wait(1000)
     //   if ($.doneState) break
     // }
+		$.outFlag = false
 		do {
-			$.outFlag = false
       await doTask2()
-			//if ($.outFlag) return
+			if ($.outFlag) break
       await $.wait(5000)
     } while (!$.doneState)
     await $.wait(1000)

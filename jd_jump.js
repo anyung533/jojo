@@ -7,7 +7,7 @@
 ================QuantumultX==================
 [task_local]
 #跳跳乐瓜分京豆
-1 0,11,21 * * * jd_jump.js, tag=跳跳乐瓜分京豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+41 3,11,21 * * * jd_jump.js, tag=跳跳乐瓜分京豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 */
 const $ = new Env('跳跳乐瓜分京豆');
@@ -29,6 +29,7 @@ if ($.isNode()) {
 }
 
 !(async () => {
+    console.log(`\n❗❗❗❗❗❗\n注意:本仓库偷助力，偷CK，今天用这个仓库，明天你一觉醒来服务器就被我偷走了🌝🌝🌚🌚\n❗❗❗❗❗❗\n`);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
